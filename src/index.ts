@@ -1,6 +1,6 @@
 const name: string = "Darren";
 
-const age: number = 18;
+const age: number = 118;
 
 function sayHello(user: string): string {
     return `Hello ${user}`;
