@@ -1,1 +1,36 @@
+<<<<<<< HEAD
 node_modules/
+=======
+# Java
+target/
+*.class
+
+# Maven
+.mvn/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+dist/
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+>>>>>>> 087d75bf32674b57c802faddbc64f87210fab3c6
