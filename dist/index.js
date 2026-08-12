@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const name = "Darren";
-const age = 18;
+const age = 118;
 function sayHello(user) {
     return `Hello ${user}`;
 }
