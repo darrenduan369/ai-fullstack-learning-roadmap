@@ -1,13 +1,19 @@
-const name: string = "Darren";
+import {
+    getFeaturedProducts, 
+    getProductsByCategory,
+    calculateTotalInventoryValue,
+} from "./services/productService";
 
-const age: number = 118;
+import { products } from "./data/products";
 
-function sayHello(user: string): string {
-    return `Hello ${user}`;
-}
+console.log("B2B Product Catalog");
+console.log(`Loaded products: ${products.length}`);
 
+const featuredProducts = getFeaturedProducts(products);
+console.log(`Featured products: ${featuredProducts.length}`);
 
-console.log(sayHello(name));
-console.log(`Age: ${age}`);
+const categoryProducts = getProductsByCategory(products, "Electronics");
+console.log(`Electronics products: ${categoryProducts.length}`);
 
-export {};
+const totalInventoryValue = calculateTotalInventoryValue(products);
+console.log(`Total inventory value: $${totalInventoryValue.toFixed(2)}`);
