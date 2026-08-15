@@ -1,4 +1,4 @@
-import type { Product } from "../types/product";
+import type { Product, StockStatus, } from "../types/product";
 
 export function getFeaturedProducts(products: Product[]): Product[] {
     // 返回所有精选产品
@@ -20,3 +20,25 @@ export function calculateTotalInventoryValue(products: Product[]): number {
         0,
     );
 }
+
+export function getProductById(products: Product[], id: number): Product | undefined {
+    // 根据 id 查找产品
+    return products.find((product) => product.id === id);
+}
+
+export function getProductNames(products: Product[]): string[] {
+    // 返回所有产品的名称
+    return products.map((product) => product.name)
+}
+
+export function getStockStatus(
+    product: Product
+    ): StockStatus {
+        if (product.stock === 0) {
+            return "out-of-stock";
+        } else if (product.stock <= 5) {
+            return "low-stock";
+        } else {
+            return "in-stock";
+        }
+    }

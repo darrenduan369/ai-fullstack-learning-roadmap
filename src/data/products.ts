@@ -7,7 +7,7 @@ export const products: Product[] = [
         name: "Industrial LED High Bay Light",
         category: "Lighting",
         price: 89.99,
-        stock: 120,
+        stock: 6,
         featured: true,
     },
     {
@@ -17,6 +17,7 @@ export const products: Product[] = [
         price: 45.5,
         stock: 80,
         featured: false,
+        description: "Energy-efficient solar-powered flood light for outdoor use.",
     },
     {
         id: 3,
@@ -33,6 +34,7 @@ export const products: Product[] = [
         price: 6.25,
         stock: 500,
         featured: false,
+        description: "Durable and eco-friendly tote bag made from 100% cotton canvas.",
     },
     {
         id: 5,
