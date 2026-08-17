@@ -9,6 +9,10 @@ export const products: Product[] = [
         price: 89.99,
         stock: 6,
         featured: true,
+        supplier: {
+        name: "Shenzhen BrightTech Co., Ltd.",
+        country: "China",
+        },
     },
     {
         id: 2,
@@ -18,6 +22,10 @@ export const products: Product[] = [
         stock: 80,
         featured: false,
         description: "Energy-efficient solar-powered flood light for outdoor use.",
+        supplier: {
+            name: "shanghai~~~",
+            country: "China"
+        }
     },
     {
         id: 3,
@@ -26,6 +34,10 @@ export const products: Product[] = [
         price: 12.75,
         stock: 300,
         featured: true,
+        supplier: {
+            name: "Marina",
+            country: "Filifine"
+        }
     },
     {
         id: 4,
@@ -35,6 +47,10 @@ export const products: Product[] = [
         stock: 500,
         featured: false,
         description: "Durable and eco-friendly tote bag made from 100% cotton canvas.",
+        supplier: {
+            name: "Mango",
+            country: "Thiland"
+        }
     },
     {
         id: 5,
@@ -43,5 +59,9 @@ export const products: Product[] = [
         price: 28,
         stock: 150,
         featured: true,
+        supplier: {
+            name: "Auao",
+            country: "Australia"
+        }        
     },
 ];

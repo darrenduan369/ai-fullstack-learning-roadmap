@@ -4,15 +4,19 @@ import {
     calculateTotalInventoryValue,
     getProductById,
     getProductNames,
-    getStockStatus
+    getStockStatus,
+    sortProductsByPrice,
+    updateProductStock,
+    updateProductStockById,
+    updateSupplierName,
 } from "./services/productService";
 
 import { products } from "./data/products";
 
 import type { Product } from "./types/product";
 
-console.log("B2B Product Catalog");
-console.log(`Loaded products: ${products.length}`);
+// console.log("B2B Product Catalog");
+// console.log(`Loaded products: ${products.length}`);
 
 // const featuredProducts = getFeaturedProducts(products);
 // console.log(`Featured products: ${featuredProducts.length}`);
@@ -38,30 +42,120 @@ console.log(`Loaded products: ${products.length}`);
 // const stockStatus = getStockStatus(products[0]);
 // console.log(`Stock status of product name: ${products[0].name}, stockNumber: ${products[0].stock}, stockStatus: ${stockStatus}`);
 
-const productId2 = 2;
-const productId3 = 3;
-const missingProduct = 999;
-const product2 = getProductById(products, productId2);
-const product3 = getProductById(products, productId3);
-const product4 = getProductById(products, missingProduct);
+// const productId2 = 2;
+// const productId3 = 3;
+// const missingProduct = 999;
+// const product2 = getProductById(products, productId2);
+// const product3 = getProductById(products, productId3);
+// const product4 = getProductById(products, missingProduct);
 
 
-function printProductDetails(
-    product: Product | undefined,
-    productId: number,
-): void {
-    if (product) {
-        console.log(
-            `Product with ID: ${productId}, ` +
-            `Name: ${product.name}, ` +
-            `Description: ${product.description ?? "No description available"}, ` +
-            `Price: $${product.price}`
-        );
-    } else {
-        console.log(`Product with ID: ${productId} not found.`);
-    }
-}
+// function printProductDetails(
+//     product: Product | undefined,
+//     productId: number,
+// ): void {
+//     if (product) {
+//         console.log(
+//             `Product with ID: ${productId}, ` +
+//             `Name: ${product.name}, ` +
+//             `Description: ${product.description ?? "No description available"}, ` +
+//             `Price: $${product.price}`
+//         );
+//     } else {
+//         console.log(`Product with ID: ${productId} not found.`);
+//     }
+// }
 
-printProductDetails(product2, productId2);
-printProductDetails(product3, productId3);
-printProductDetails(product4, missingProduct);
+// printProductDetails(product2, productId2);
+// printProductDetails(product3, productId3);
+// printProductDetails(product4, missingProduct);
+
+// console.log('\nOriginal products:');
+// products.forEach((product) => {
+//     console.log(`${product.name}: $${product.price}`);
+// });
+
+// const sortedProductsAsc = sortProductsByPrice(products, "asc");
+// console.log("\nSorted products:");
+// sortedProductsAsc.forEach((product) => {
+//     console.log(`${product.name}: $${product.price}`);
+// });
+
+// console.log("\nOriginal products after sorting:");
+// products.forEach((product) => {
+//     console.log(`${product.name}: $${product.price}`);
+// });
+
+// // 降序
+// const sortedProductsDesc = sortProductsByPrice(products, "desc");
+// console.log("\nSorted products by price DESC:");
+// sortedProductsDesc.forEach((product) => {
+//     console.log(`${product.name}: $${product.price}`);
+// });
+
+// const originalProduct = products[0];
+// const updatedProduct = updateProductStock(
+//     originalProduct,
+//     999,
+// );
+
+// console.log("Original stock:", originalProduct.stock);
+// console.log("Updated stock:", updatedProduct.stock);
+// console.log(
+//     "Same object:",
+//     originalProduct === updatedProduct,
+// );
+
+// const updatedProducts = updateProductStockById(
+//     products,
+//     1,
+//     999,
+// );
+
+// console.log(
+//     "Original stock:",
+//     products[0].stock,
+// );
+
+// console.log(
+//     "Updated stock:",
+//     updatedProducts[0].stock,
+// );
+
+// console.log(
+//     "Same array:",
+//     products === updatedProducts,
+// );
+
+// console.log(
+//     products[0] === updatedProducts[0],
+// );
+
+// console.log(
+//     products[1] === updatedProducts[1],
+// );
+
+
+const originalProduct = products[0];
+// originalProduct.supplier.name = "Old Supplier"
+
+const updatedProduct = updateSupplierName(
+    originalProduct,
+    "New Supplier",
+);
+
+console.log(
+    "Same supplier:",
+    originalProduct.supplier === updatedProduct.supplier,
+);
+
+
+console.log(
+    "Original supplier:",
+    originalProduct.supplier.name,
+);
+
+console.log(
+    "Updated supplier:",
+    updatedProduct.supplier.name,
+);

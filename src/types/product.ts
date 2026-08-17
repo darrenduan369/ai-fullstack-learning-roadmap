@@ -7,9 +7,17 @@ export interface Product {
     stock: number;
     featured: boolean;
     description?: string; // 可选属性，产品描述
+    supplier: Supplier;
 }
 
 export type StockStatus =
     | "in-stock"
     | "low-stock"
     | "out-of-stock";
+
+export type SortDirection = "asc" | "desc";
+
+export interface Supplier {
+    name: string;
+    country: string;
+}
