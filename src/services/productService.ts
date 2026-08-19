@@ -1,20 +1,20 @@
 import { products } from "../data/products";
 import type { Product, StockStatus, SortDirection} from "../types/product";
 
-export function getFeaturedProducts(products: Product[]): Product[] {
+export function getFeaturedProducts(products: readonly Product[]): Product[] {
     // 返回所有精选产品
     return products.filter((product) => product.featured);
 }
 
 export function getProductsByCategory(
-    products: Product[],
+    products: readonly Product[],
     category: string,
 ): Product[] {
     // 筛选指定 category 的产品
     return products.filter((product) => product.category === category);
 }
 
-export function calculateTotalInventoryValue(products: Product[]): number {
+export function calculateTotalInventoryValue(products: readonly Product[]): number {
     // 计算所有产品的库存总价值
     return products.reduce(
         (sum, product) => sum + product.price * product.stock,
@@ -22,18 +22,18 @@ export function calculateTotalInventoryValue(products: Product[]): number {
     );
 }
 
-export function getProductById(products: Product[], id: number): Product | undefined {
+export function getProductById(products: readonly Product[], id: number): Product | undefined {
     // 根据 id 查找产品
     return products.find((product) => product.id === id);
 }
 
-export function getProductNames(products: Product[]): string[] {
+export function getProductNames(products: readonly Product[]): string[] {
     // 返回所有产品的名称
     return products.map((product) => product.name)
 }
 
 export function getStockStatus(
-    product: Product
+    product: Readonly<Product>
     ): StockStatus {
         if (product.stock === 0) {
             return "out-of-stock";
@@ -45,7 +45,7 @@ export function getStockStatus(
     }
 
 export function sortProductsByPrice(
-    products: Product[],
+    products: readonly Product[],
     // 默认升序
     direction: SortDirection = "asc"
 ): Product[] {
@@ -60,7 +60,7 @@ export function sortProductsByPrice(
 }
 
 export function updateProductStock(
-    product: Product,
+    product: Readonly<Product>,
     newStock: number,
 ): Product {
     return {
@@ -70,7 +70,7 @@ export function updateProductStock(
 };
 
 export function updateProductStockById(
-    products: Product[],
+    products: readonly Product[],
     productId: number,
     newStock: number,
 ): Product[] {
@@ -87,7 +87,7 @@ export function updateProductStockById(
 };
 
 export function updateSupplierName(
-    product: Product,
+    product: Readonly<Product>,
     newSupplierName: string,
 ): Product {
     return {
@@ -97,4 +97,24 @@ export function updateSupplierName(
             name: newSupplierName,
         },
     }
+}
+
+export function updateSupplierNameById(
+    products: readonly Product[],
+    productId: number,
+    newSupplierName: string,
+): Product[] {
+    return products.map((product) => {
+        if (product.id === productId) {
+            return {
+                ...product,
+                supplier: {
+                    ...product.supplier,
+                    name: newSupplierName,
+                },
+            };
+        }
+
+        return product;
+    });
 }

@@ -10,12 +10,18 @@ export interface Product {
     supplier: Supplier;
 }
 
-export type StockStatus =
-    | "in-stock"
-    | "low-stock"
-    | "out-of-stock";
+export const STOCK_STATUSES = [
+    "in-stock",
+    "low-stock",
+    "out-of-stock",
+] as const;
+export type StockStatus = typeof STOCK_STATUSES[number];
 
-export type SortDirection = "asc" | "desc";
+export const SORT_DIRECTIONS = [
+    "asc",
+    "desc",
+] as const;
+export type SortDirection = typeof SORT_DIRECTIONS[number];
 
 export interface Supplier {
     name: string;

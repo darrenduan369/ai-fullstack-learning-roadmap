@@ -9,6 +9,7 @@ import {
     updateProductStock,
     updateProductStockById,
     updateSupplierName,
+    updateSupplierNameById,
 } from "./services/productService";
 
 import { products } from "./data/products";
@@ -136,26 +137,64 @@ import type { Product } from "./types/product";
 // );
 
 
-const originalProduct = products[0];
-// originalProduct.supplier.name = "Old Supplier"
+// const originalProduct = products[0];
+// // originalProduct.supplier.name = "Old Supplier"
 
-const updatedProduct = updateSupplierName(
-    originalProduct,
-    "New Supplier",
-);
+// const updatedProduct = updateSupplierName(
+//     originalProduct,
+//     "New Supplier",
+// );
 
-console.log(
-    "Same supplier:",
-    originalProduct.supplier === updatedProduct.supplier,
-);
+// console.log(
+//     "Same supplier:",
+//     originalProduct.supplier === updatedProduct.supplier,
+// );
 
 
-console.log(
-    "Original supplier:",
-    originalProduct.supplier.name,
-);
+// console.log(
+//     "Original supplier:",
+//     originalProduct.supplier.name,
+// );
 
-console.log(
-    "Updated supplier:",
-    updatedProduct.supplier.name,
-);
+// console.log(
+//     "Updated supplier:",
+//     updatedProduct.supplier.name,
+// );
+
+
+
+// const updatedProducts = updateSupplierNameById(
+//     products,
+//     1,
+//     "Global Tech Supplier",
+// );
+
+// console.log(
+//     "Original supplier:",
+//     products[0].supplier.name,
+// );
+
+// console.log(
+//     "Updated supplier:",
+//     updatedProducts[0].supplier.name,
+// );
+
+// console.log(
+//     "Same array:",
+//     products === updatedProducts,
+// );
+
+// console.log(
+//     "Same product:",
+//     products[0] === updatedProducts[0],
+// );
+
+// console.log(
+//     "Same supplier:",
+//     products[0].supplier === updatedProducts[0].supplier,
+// );
+
+// console.log(
+//     "Same unchanged product:",
+//     products[1] === updatedProducts[1],
+// );
