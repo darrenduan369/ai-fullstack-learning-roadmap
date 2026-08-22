@@ -1,3 +1,7 @@
+import { getField,
+         updateField,
+ } from "./utils/objectUtils";
+
 import {
     getFeaturedProducts, 
     getProductsByCategory,
@@ -10,11 +14,13 @@ import {
     updateProductStockById,
     updateSupplierName,
     updateSupplierNameById,
+    getProductField,
+    updateProduct,
 } from "./services/productService";
 
 import { products } from "./data/products";
 
-import type { Product } from "./types/product";
+import type { Product, ProductKey, SortDirection } from "./types/product";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -198,3 +204,85 @@ import type { Product } from "./types/product";
 //     "Same unchanged product:",
 //     products[1] === updatedProducts[1],
 // );
+
+// interface SortConfig {
+//     direction: SortDirection;
+//     label: string;
+// }
+
+// const sortConfig = {
+//     direction: "asc",
+//     label: "Price: Low to High",
+// } satisfies SortConfig;
+
+// const sortedProducts =
+//     sortProductsByPrice(
+//         products,
+//         sortConfig.direction,
+//     );
+
+// const key1: ProductKey = "name";
+// const key2: ProductKey = "price";
+
+const firstProduct = products[0];
+
+const productName = getProductField(firstProduct, "name");
+
+const productPrice = getProductField(firstProduct, "price");
+
+const productFeatured = getProductField(firstProduct, "featured");
+
+const productDescription = getProductField(firstProduct, "description");
+
+const name = getField(firstProduct, "name");
+
+const price = getField(firstProduct, "price");
+
+const featured = getField(firstProduct, "featured");
+
+const description = getField(firstProduct, "description");
+
+const supplier = getField(firstProduct, "supplier");
+
+const user = {
+    id: 1,
+    username: "Darren",
+    active: true,
+};
+
+const username =
+    getField(user, "username");
+
+const active =
+    getField(user, "active");
+
+
+const updatedStockProduct =
+    updateField(firstProduct, "stock", 999);
+
+const updatedNameProduct =
+    updateField(firstProduct, "name", "Updated Product");
+
+const updatedFeaturedProduct =
+    updateField(firstProduct, "featured", false);
+
+
+const originalProduct = products[0];
+const updatedProduct = updateProduct(
+    originalProduct,
+    {
+        name: "Premium Industrial LED High Bay Light",
+        stock: 100,
+    },
+);
+
+console.log("Original name:", originalProduct.name);
+console.log("Updated name:", updatedProduct.name);
+
+console.log("Original stock:", originalProduct.stock);
+console.log("Updated stock:", updatedProduct.stock);
+
+console.log(
+    "Same product:",
+    originalProduct === updatedProduct,
+);

@@ -118,3 +118,20 @@ export function updateSupplierNameById(
         return product;
     });
 }
+
+export function getProductField<K extends keyof Product>(
+    product: Readonly<Product>,
+    field: K,
+): Product[K] {
+    return product[field];
+}
+
+export function updateProduct(
+    product: Product,
+    changes: Partial<Product>,
+): Product {
+    return {
+        ...product,
+        ...changes,
+    };
+}

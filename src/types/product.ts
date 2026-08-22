@@ -7,7 +7,7 @@ export interface Product {
     stock: number;
     featured: boolean;
     description?: string; // 可选属性，产品描述
-    supplier: Supplier;
+    supplier: Readonly<Supplier>;
 }
 
 export const STOCK_STATUSES = [
@@ -27,3 +27,5 @@ export interface Supplier {
     name: string;
     country: string;
 }
+
+export type ProductKey = keyof Product;
