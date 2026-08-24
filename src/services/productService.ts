@@ -1,5 +1,5 @@
 import { products } from "../data/products";
-import type { Product, StockStatus, SortDirection} from "../types/product";
+import type { Product, StockStatus, SortDirection, Supplier, ProductChanges} from "../types/product";
 
 export function getFeaturedProducts(products: readonly Product[]): Product[] {
     // 返回所有精选产品
@@ -126,12 +126,42 @@ export function getProductField<K extends keyof Product>(
     return product[field];
 }
 
-export function updateProduct(
+export function updateProductWithoutSupplier(
     product: Product,
     changes: Partial<Product>,
 ): Product {
     return {
         ...product,
         ...changes,
+    };
+}
+
+export function updateSupplier(
+    product: Product,
+    changes: Partial<Supplier>,
+): Product {
+    return {
+        ...product,
+        supplier: {
+            ...product.supplier,
+            ...changes,
+        },
+    };
+}
+
+export function updateProduct(
+    product: Product,
+    changes: ProductChanges,
+): Product {
+    return {
+        ...product,
+        ...changes,
+
+        supplier: changes.supplier
+            ? {
+                  ...product.supplier,
+                  ...changes.supplier,
+              }
+            : product.supplier,
     };
 }

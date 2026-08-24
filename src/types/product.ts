@@ -29,3 +29,7 @@ export interface Supplier {
 }
 
 export type ProductKey = keyof Product;
+
+export type ProductChanges = Partial<Omit<Product, "supplier">> & {
+        supplier?: Partial<Supplier>;
+    };

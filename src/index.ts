@@ -16,11 +16,12 @@ import {
     updateSupplierNameById,
     getProductField,
     updateProduct,
+    updateSupplier,
 } from "./services/productService";
 
 import { products } from "./data/products";
 
-import type { Product, ProductKey, SortDirection } from "./types/product";
+import type { Product, ProductChanges, ProductKey, SortDirection } from "./types/product";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -224,65 +225,188 @@ import type { Product, ProductKey, SortDirection } from "./types/product";
 // const key1: ProductKey = "name";
 // const key2: ProductKey = "price";
 
-const firstProduct = products[0];
+// const firstProduct = products[0];
 
-const productName = getProductField(firstProduct, "name");
+// const productName = getProductField(firstProduct, "name");
 
-const productPrice = getProductField(firstProduct, "price");
+// const productPrice = getProductField(firstProduct, "price");
 
-const productFeatured = getProductField(firstProduct, "featured");
+// const productFeatured = getProductField(firstProduct, "featured");
 
-const productDescription = getProductField(firstProduct, "description");
+// const productDescription = getProductField(firstProduct, "description");
 
-const name = getField(firstProduct, "name");
+// const name = getField(firstProduct, "name");
 
-const price = getField(firstProduct, "price");
+// const price = getField(firstProduct, "price");
 
-const featured = getField(firstProduct, "featured");
+// const featured = getField(firstProduct, "featured");
 
-const description = getField(firstProduct, "description");
+// const description = getField(firstProduct, "description");
 
-const supplier = getField(firstProduct, "supplier");
+// const supplier = getField(firstProduct, "supplier");
 
-const user = {
-    id: 1,
-    username: "Darren",
-    active: true,
-};
+// const user = {
+//     id: 1,
+//     username: "Darren",
+//     active: true,
+// };
 
-const username =
-    getField(user, "username");
+// const username =
+//     getField(user, "username");
 
-const active =
-    getField(user, "active");
+// const active =
+//     getField(user, "active");
 
 
-const updatedStockProduct =
-    updateField(firstProduct, "stock", 999);
+// const updatedStockProduct =
+//     updateField(firstProduct, "stock", 999);
 
-const updatedNameProduct =
-    updateField(firstProduct, "name", "Updated Product");
+// const updatedNameProduct =
+//     updateField(firstProduct, "name", "Updated Product");
 
-const updatedFeaturedProduct =
-    updateField(firstProduct, "featured", false);
+// const updatedFeaturedProduct =
+//     updateField(firstProduct, "featured", false);
 
+
+// const originalProduct = products[0];
+// const updatedProduct = updateProduct(
+//     originalProduct,
+//     {
+//         name: "Premium Industrial LED High Bay Light",
+//         stock: 100,
+//     },
+// );
+
+// console.log("Original name:", originalProduct.name);
+// console.log("Updated name:", updatedProduct.name);
+
+// console.log("Original stock:", originalProduct.stock);
+// console.log("Updated stock:", updatedProduct.stock);
+
+// console.log(
+//     "Same product:",
+//     originalProduct === updatedProduct,
+// );
+
+// const originalProduct = products[0];
+// const updatedProduct = updateSupplier(
+//     originalProduct,
+//     {
+//         name: "Global Tech Supplier",
+//     },
+// );
+
+// console.log(
+//     "Original supplier:",
+//     originalProduct.supplier.name,
+// );
+// console.log(
+//     "Updated supplier:",
+//     updatedProduct.supplier.name,
+// );
+// console.log(
+//     "Same product:",
+//     originalProduct === updatedProduct,
+// );
+// console.log(
+//     "Same supplier:",
+//     originalProduct.supplier === updatedProduct.supplier,
+// );
+
+
+// const changes1: ProductChanges = {
+//     name: "Premium LED Light",
+// };
+
+// const changes2: ProductChanges = {
+//     stock: 100,
+// };
+
+// const changes3: ProductChanges = {
+//     supplier: {
+//         name: "Global Tech Supplier",
+//     },
+// };
+
+// const changes4: ProductChanges = {
+//     name: "Premium LED Light",
+//     stock: 100,
+//     supplier: {
+//         name: "Global Tech Supplier",
+//     },
+// };
 
 const originalProduct = products[0];
+
+// const updatedProduct = updateProduct(
+//     originalProduct,
+//     {
+//         name: "Premium Industrial LED High Bay Light",
+//         stock: 100,
+
+//         supplier: {
+//             name: "Global Tech Supplier",
+//         },
+//     },
+// );
+
+// console.log(
+//     "Original name:",
+//     originalProduct.name,
+// );
+
+// console.log(
+//     "Updated name:",
+//     updatedProduct.name,
+// );
+
+// console.log(
+//     "Original stock:",
+//     originalProduct.stock,
+// );
+
+// console.log(
+//     "Updated stock:",
+//     updatedProduct.stock,
+// );
+
+// console.log(
+//     "Original supplier:",
+//     originalProduct.supplier.name,
+// );
+
+// console.log(
+//     "Updated supplier:",
+//     updatedProduct.supplier.name,
+// );
+
+// console.log(
+//     "Country:",
+//     updatedProduct.supplier.country,
+// );
+
+// console.log(
+//     "Same product:",
+//     originalProduct === updatedProduct,
+// );
+
+// console.log(
+//     "Same supplier:",
+//     originalProduct.supplier === updatedProduct.supplier,
+// );
+
+
 const updatedProduct = updateProduct(
     originalProduct,
     {
-        name: "Premium Industrial LED High Bay Light",
         stock: 100,
     },
 );
 
-console.log("Original name:", originalProduct.name);
-console.log("Updated name:", updatedProduct.name);
-
-console.log("Original stock:", originalProduct.stock);
-console.log("Updated stock:", updatedProduct.stock);
+console.log(
+    originalProduct === updatedProduct,
+);
 
 console.log(
-    "Same product:",
-    originalProduct === updatedProduct,
+    originalProduct.supplier === updatedProduct.supplier,
 );
