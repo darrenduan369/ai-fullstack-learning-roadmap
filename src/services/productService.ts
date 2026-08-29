@@ -1,5 +1,5 @@
 import { products } from "../data/products";
-import type { Product, StockStatus, SortDirection, Supplier, ProductChanges} from "../types/product";
+import type { Product, StockStatus, SortDirection, Supplier, ProductChanges, ProductCard} from "../types/product";
 
 export function getFeaturedProducts(products: readonly Product[]): Product[] {
     // 返回所有精选产品
@@ -164,4 +164,45 @@ export function updateProduct(
               }
             : product.supplier,
     };
+}
+
+export function toProductCard(
+    product: Product,
+): ProductCard {
+    return {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        featured: product.featured,
+    };
+}
+
+export function toProductCards(
+    products: readonly Product[],
+): ProductCard[] {
+    return products.map(toProductCard);
+}
+
+export function countProductsByCategory(
+    products: readonly Product[],
+): Record<string, number> {
+    return products.reduce<Record<string, number>>(
+        (counts, product) => {
+        counts[product.category] = (counts[product.category] ?? 0) + 1;
+        return counts;
+        }, 
+        {}
+    );
+}
+
+export function createProductMap(
+    products: readonly Product[],
+): Partial<Record<number, Product>> {
+    return products.reduce<Partial<Record<number, Product>>>(
+        (map, product) => {
+            map[product.id] = product;
+            return map;
+        },
+        {}
+    );
 }

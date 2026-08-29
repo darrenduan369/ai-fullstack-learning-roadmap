@@ -1,27 +1,35 @@
-import { getField,
-         updateField,
- } from "./utils/objectUtils";
+import { getField, updateField } from "./utils/objectUtils";
 
 import {
-    getFeaturedProducts, 
-    getProductsByCategory,
-    calculateTotalInventoryValue,
-    getProductById,
-    getProductNames,
-    getStockStatus,
-    sortProductsByPrice,
-    updateProductStock,
-    updateProductStockById,
-    updateSupplierName,
-    updateSupplierNameById,
-    getProductField,
-    updateProduct,
-    updateSupplier,
+  getFeaturedProducts,
+  getProductsByCategory,
+  calculateTotalInventoryValue,
+  getProductById,
+  getProductNames,
+  getStockStatus,
+  sortProductsByPrice,
+  updateProductStock,
+  updateProductStockById,
+  updateSupplierName,
+  updateSupplierNameById,
+  getProductField,
+  updateProduct,
+  updateSupplier,
+  toProductCard,
+  toProductCards,
+  countProductsByCategory,
+  createProductMap,
 } from "./services/productService";
 
 import { products } from "./data/products";
 
-import type { Product, ProductChanges, ProductKey, SortDirection } from "./types/product";
+import {
+  STOCK_STATUS_LABELS,
+  type Product,
+  type ProductChanges,
+  type ProductKey,
+  type SortDirection,
+} from "./types/product";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -56,7 +64,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 // const product2 = getProductById(products, productId2);
 // const product3 = getProductById(products, productId3);
 // const product4 = getProductById(products, missingProduct);
-
 
 // function printProductDetails(
 //     product: Product | undefined,
@@ -143,7 +150,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 //     products[1] === updatedProducts[1],
 // );
 
-
 // const originalProduct = products[0];
 // // originalProduct.supplier.name = "Old Supplier"
 
@@ -157,7 +163,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 //     originalProduct.supplier === updatedProduct.supplier,
 // );
 
-
 // console.log(
 //     "Original supplier:",
 //     originalProduct.supplier.name,
@@ -167,8 +172,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 //     "Updated supplier:",
 //     updatedProduct.supplier.name,
 // );
-
-
 
 // const updatedProducts = updateSupplierNameById(
 //     products,
@@ -257,7 +260,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 // const active =
 //     getField(user, "active");
 
-
 // const updatedStockProduct =
 //     updateField(firstProduct, "stock", 999);
 
@@ -266,7 +268,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 
 // const updatedFeaturedProduct =
 //     updateField(firstProduct, "featured", false);
-
 
 // const originalProduct = products[0];
 // const updatedProduct = updateProduct(
@@ -312,7 +313,6 @@ import type { Product, ProductChanges, ProductKey, SortDirection } from "./types
 //     "Same supplier:",
 //     originalProduct.supplier === updatedProduct.supplier,
 // );
-
 
 // const changes1: ProductChanges = {
 //     name: "Premium LED Light",
@@ -395,18 +395,41 @@ const originalProduct = products[0];
 //     originalProduct.supplier === updatedProduct.supplier,
 // );
 
+// const updatedProduct = updateProduct(
+//     originalProduct,
+//     {
+//         stock: 100,
+//     },
+// );
 
-const updatedProduct = updateProduct(
-    originalProduct,
-    {
-        stock: 100,
-    },
-);
+// console.log(
+//     originalProduct === updatedProduct,
+// );
 
-console.log(
-    originalProduct === updatedProduct,
-);
+// console.log(
+//     originalProduct.supplier === updatedProduct.supplier,
+// );
 
-console.log(
-    originalProduct.supplier === updatedProduct.supplier,
-);
+// const productCards =
+//     toProductCards(products);
+
+// productCards.forEach((card) => {
+//     console.log(
+//         `${card.name} - $${card.price.toFixed(2)}`,
+//     );
+// });
+
+// const categoryCounts = countProductsByCategory(products);
+// console.log(categoryCounts);
+
+const productMap = createProductMap(products);
+// console.log(productMap);
+// console.log(productMap[3].name,);
+
+const existingProduct = productMap[3];
+
+const missingProduct = productMap[999];
+
+console.log(productMap[3]?.name ?? "Product not found");
+
+console.log(productMap[999]?.name ?? "Product not found");
