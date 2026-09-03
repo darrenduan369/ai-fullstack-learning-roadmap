@@ -38,3 +38,11 @@ export type ProductChanges = Partial<Omit<Product, "supplier">> & {
 };
 
 export type ProductCard = Pick<Product, "id" | "name" | "price" | "featured">;
+
+export interface ProductFilterOptions {
+  category?: string;
+  minPrice?: number;
+  featuredOnly?: boolean;
+}
+
+type PriceRange = readonly [min: number, max: number];

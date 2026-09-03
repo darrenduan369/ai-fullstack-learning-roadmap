@@ -1,4 +1,4 @@
-import { getField, updateField } from "./utils/objectUtils";
+import { getField, sum, updateField } from "./utils/objectUtils";
 
 import {
   getFeaturedProducts,
@@ -19,11 +19,15 @@ import {
   toProductCards,
   countProductsByCategory,
   createProductMap,
+  filterProducts,
+  calculateSelectedStock,
+  getPriceRange,
 } from "./services/productService";
 
 import { products } from "./data/products";
 
 import {
+  ProductFilterOptions,
   STOCK_STATUS_LABELS,
   type Product,
   type ProductChanges,
@@ -422,14 +426,72 @@ const originalProduct = products[0];
 // const categoryCounts = countProductsByCategory(products);
 // console.log(categoryCounts);
 
-const productMap = createProductMap(products);
-// console.log(productMap);
-// console.log(productMap[3].name,);
+// const productMap = createProductMap(products);
+// // console.log(productMap);
+// // console.log(productMap[3].name,);
 
-const existingProduct = productMap[3];
+// const existingProduct = productMap[3];
 
-const missingProduct = productMap[999];
+// const missingProduct = productMap[999];
 
-console.log(productMap[3]?.name ?? "Product not found");
+// console.log(productMap[3]?.name ?? "Product not found");
 
-console.log(productMap[999]?.name ?? "Product not found");
+// console.log(productMap[999]?.name ?? "Product not found");
+
+// const lightingProducts = filterProducts(products, {
+//   category: "Lighting",
+// });
+// console.log(lightingProducts.map((product) => product.name));
+
+// const expensiveProducts = filterProducts(products, {
+//   minPrice: 40,
+// });
+// console.log(expensiveProducts.map((product) => product.price));
+
+// const featuredProducts = filterProducts(products, {
+//   featuredOnly: true,
+// });
+// console.log(featuredProducts.map((product) => product.featured));
+
+// const filteredProducts = filterProducts(products, {
+//   category: "Lighting",
+//   minPrice: 40,
+//   featuredOnly: true,
+// });
+// console.log(filteredProducts);
+
+// const filterOptions: ProductFilterOptions = {
+//   category: "Lighting",
+//   minPrice: 40,
+//   featuredOnly: true,
+// };
+
+// const { category: selectedCategory, ...otherOptions } = filterOptions;
+
+// console.log("Selected category:", selectedCategory);
+
+// console.log("Other options:", otherOptions);
+
+// const { featuredOnly: onlyFeatured = false } = {};
+
+// console.log(onlyFeatured);
+
+// const selectedStock = calculateSelectedStock(
+//   products[0],
+//   products[2],
+//   products[4],
+// );
+
+// console.log("Selected stock:", selectedStock);
+
+// console.log(sum(10, 20, 30));
+
+// const values = [100, 200, 300];
+
+// console.log(sum(...values));
+
+// const [minPrice, maxPrice] = getPriceRange(products);
+
+// console.log("Min price:", minPrice);
+
+// console.log("Max price:", maxPrice);
