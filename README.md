@@ -23,6 +23,7 @@ Java Developer | AI Full Stack Developer
 - TypeScript
 - React
 - Astro
+- Senity
 
 ### AI Development
 
