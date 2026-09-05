@@ -2,7 +2,7 @@
 
 ## 👨‍💻 About Me
 
-Darren Duan
+Darren
 
 Java Developer | AI Full Stack Developer
 
@@ -23,6 +23,7 @@ Java Developer | AI Full Stack Developer
 - TypeScript
 - React
 - Astro
+- Senity
 
 ### AI Development
 
