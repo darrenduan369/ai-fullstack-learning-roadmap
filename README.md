@@ -2,7 +2,7 @@
 
 ## 👨‍💻 About Me
 
-Darren Duan
+Darren
 
 Java Developer | AI Full Stack Developer
 
