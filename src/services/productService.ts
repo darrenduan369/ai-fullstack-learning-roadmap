@@ -7,6 +7,7 @@ import type {
   ProductChanges,
   ProductCard,
   ProductFilterOptions,
+  ProductSearchOptions,
 } from "../types/product";
 
 export function getFeaturedProducts(products: readonly Product[]): Product[] {
@@ -239,4 +240,78 @@ export function getPriceRange(products: readonly Product[]): [number, number] {
   const maxPrice = Math.max(...prices);
 
   return [minPrice, maxPrice];
+}
+
+export function findProduct(
+  products: readonly Product[],
+  id: number,
+): Product | undefined;
+
+export function findProduct(
+  products: readonly Product[],
+  name: string,
+): Product | undefined;
+
+export function findProduct(
+  products: readonly Product[],
+  value: number | string,
+): Product | undefined {
+  if (typeof value === "number") {
+    return products.find((product) => product.id === value);
+  }
+
+  if (typeof value === "string") {
+    return products.find((product) => product.name === value);
+  }
+  return undefined;
+}
+
+export function searchProduct(
+  products: readonly Product[],
+  id: number,
+): Product | undefined;
+
+export function searchProduct(
+  products: readonly Product[],
+  keyword: string,
+): Product[];
+
+export function searchProduct(
+  products: readonly Product[],
+  options: ProductSearchOptions,
+): Product[];
+
+export function searchProduct(
+  products: readonly Product[],
+  query: number | string | ProductSearchOptions,
+): Product | Product[] | undefined {
+  if (typeof query === "number") {
+    return products.find((product) => product.id === query);
+  }
+
+  if (typeof query === "string") {
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(query.toLowerCase()),
+    );
+  }
+
+  return products.filter((product) => {
+    if (query.category !== undefined && product.category !== query.category) {
+      return false;
+    }
+
+    if (query.featuredOnly && !product.featured) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+export function isProduct(value: unknown): value is Product {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  return "id" in value && "name" in value && "price" in value;
 }

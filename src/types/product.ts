@@ -46,3 +46,8 @@ export interface ProductFilterOptions {
 }
 
 type PriceRange = readonly [min: number, max: number];
+
+export interface ProductSearchOptions {
+  category?: string;
+  featuredOnly?: boolean;
+}

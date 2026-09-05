@@ -22,6 +22,9 @@ import {
   filterProducts,
   calculateSelectedStock,
   getPriceRange,
+  findProduct,
+  searchProduct,
+  isProduct,
 } from "./services/productService";
 
 import { products } from "./data/products";
@@ -495,3 +498,62 @@ const originalProduct = products[0];
 // console.log("Min price:", minPrice);
 
 // console.log("Max price:", maxPrice);
+
+// const productById = findProduct(products, 1);
+
+// const productByName = findProduct(products, "Industrial LED High Bay Light");
+
+// console.log("Product by ID:", productById);
+
+// console.log("Product by Name:", productByName);
+
+// const byId = searchProduct(products, 1);
+
+// const byKeyword = searchProduct(products, "Light");
+
+// const byOptions = searchProduct(products, {
+//   category: "Lighting",
+//   featuredOnly: true,
+// });
+
+// console.log("By ID:", byId?.name ?? "Product not found");
+
+// console.log(
+//   "By keyword:",
+//   byKeyword.map((product) => product.name),
+// );
+
+// console.log(
+//   "By options:",
+//   byOptions.map((product) => product.name),
+// );
+
+// const unknownValue: unknown = {
+//   id: 1,
+//   name: "Test Product",
+//   price: 99.99,
+// };
+
+// if (isProduct(unknownValue)) {
+//   console.log("Product name:", unknownValue.name);
+// }
+
+// const invalidValue: unknown = {
+//   username: "Darren",
+// };
+
+// console.log(isProduct(invalidValue));
+
+const rawData: unknown[] = [
+  products[0],
+  {
+    id: "wrong",
+    name: "Bad Product",
+  },
+  "hello",
+  null,
+];
+
+const validProducts = rawData.filter(isProduct);
+
+console.log(validProducts.map((product) => product.name));
