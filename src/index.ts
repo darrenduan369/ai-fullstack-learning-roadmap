@@ -25,6 +25,7 @@ import {
   findProduct,
   searchProduct,
   isProduct,
+  assertIsProduct,
 } from "./services/productService";
 
 import { products } from "./data/products";
@@ -544,16 +545,40 @@ const originalProduct = products[0];
 
 // console.log(isProduct(invalidValue));
 
-const rawData: unknown[] = [
-  products[0],
-  {
-    id: "wrong",
-    name: "Bad Product",
-  },
-  "hello",
-  null,
-];
+// const rawData: unknown[] = [
+//   products[0],
+//   {
+//     id: "wrong",
+//     name: "Bad Product",
+//   },
+//   "hello",
+//   null,
+// ];
 
-const validProducts = rawData.filter(isProduct);
+// const validProducts = rawData.filter(isProduct);
 
-console.log(validProducts.map((product) => product.name));
+// console.log(validProducts.map((product) => product.name));
+
+// const apiData: unknown = products[0];
+
+// assertIsProduct(apiData);
+
+// console.log("Asserted product:", apiData.name);
+
+const apiData: unknown = {
+  id: "wrong",
+};
+
+try {
+  assertIsProduct(apiData);
+
+  console.log("Product:", apiData.name);
+} catch (error) {
+  if (error instanceof Error) {
+    console.log("Validation error:", error.message);
+  } else {
+    console.log("Unknown error");
+  }
+} finally {
+  console.log("Validation finished");
+}
