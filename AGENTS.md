@@ -29,6 +29,16 @@ This is a TypeScript learning project.
 - Do not modify Git history unless explicitly requested.
 - Never use force push unless explicitly requested.
 
+## Learning and Requirement Traceability / 学习与需求追溯
+
+- Before handling project requests, read `docs/LEARNING-TRACE.md` and locate related lessons, symbols, issues, and requirement records; verify them against current code and Git state.
+- 项目需求处理完成、部分完成或受阻时，主动更新 `docs/LEARNING-TRACE.md` 的需求索引和处理详情；学习讲解无代码变更时也记录结论。遵循文档中的编号、模板及维护流程，不需要用户重复提醒。
+- 记录实际时间和时区、需求摘要、原因、修改文件/符号、验证结果、处理分支及提交信息；新增课程同步维护课程目录，修复旧问题回链相关记录。
+- Distinguish verified evidence from inferred history. Never invent dates, original branch names, commit hashes/messages, or test results. Mark uncommitted work explicitly and backfill verified commit metadata in the next maintenance pass.
+- Do not commit, amend, or rewrite Git history merely to fill this document. Keep existing IDs and historical evidence; update paths and links when code moves.
+- After each lesson's code has been committed, update both `docs/LEARNING-TRACE.md` and `docs/TypeScript-Learning-Trace.docx`. Record the lesson date and time, branch, commit SHA, exact commit message, learning topics, changed files or symbols, and verification result. Regenerate and verify the DOCX navigation so it stays synchronized with the Markdown source.
+- 每课代码提交完成后，必须同步更新 Markdown 主档和 DOCX 导航版；如果课程代码尚未提交，应先标记“待提交”，不得编造提交信息。提交完成后补录真实 SHA、时间、分支和 message，并确认两个文档内容一致。
+
 
 # 项目规则
 

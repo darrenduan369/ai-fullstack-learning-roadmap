@@ -318,6 +318,34 @@ export function isProduct(value: unknown): value is Product {
 
 export function assertIsProduct(value: unknown): asserts value is Product {
   if (!isProduct(value)) {
-    throw new Error("Invalid product data");
+    throw new ProductValidationError("Invalid product data");
   }
+}
+
+export class ProductValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ProductValidationError";
+  }
+}
+
+export class ProductNotFoundError extends Error {
+  constructor(public readonly productId: number) {
+    super(`Product ${productId} was not found`);
+
+    this.name = "ProductNotFoundError";
+  }
+}
+
+export function getRequiredProductById(
+  products: readonly Product[],
+  id: number,
+): Product {
+  const product = products.find((product) => product.id === id);
+
+  if (!product) {
+    throw new ProductNotFoundError(id);
+  }
+
+  return product;
 }

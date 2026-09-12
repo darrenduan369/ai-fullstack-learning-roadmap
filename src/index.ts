@@ -26,6 +26,8 @@ import {
   searchProduct,
   isProduct,
   assertIsProduct,
+  ProductNotFoundError,
+  getRequiredProductById,
 } from "./services/productService";
 
 import { products } from "./data/products";
@@ -38,6 +40,14 @@ import {
   type ProductKey,
   type SortDirection,
 } from "./types/product";
+
+import { ProductEntity } from "./models/ProductEntity";
+import { Sellable } from "./types/constracts";
+import {
+  BaseProduct,
+  DiscountProduct,
+  PhysicalProduct,
+} from "./models/BaseProduct";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -565,20 +575,61 @@ const originalProduct = products[0];
 
 // console.log("Asserted product:", apiData.name);
 
-const apiData: unknown = {
-  id: "wrong",
+// const apiData: unknown = {
+//   id: "wrong",
+// };
+
+// try {
+//   assertIsProduct(apiData);
+
+//   console.log("Product:", apiData.name);
+// } catch (error) {
+//   if (error instanceof Error) {
+//     console.log("Validation error:", error.message);
+//   } else {
+//     console.log("Unknown error");
+//   }
+// } finally {
+//   console.log("Validation finished");
+// }
+
+// try {
+//   const product = getRequiredProductById(products, 999);
+
+//   console.log(product.name);
+// } catch (error) {
+//   if (error instanceof ProductNotFoundError) {
+//     console.log("Missing product:", error.productId);
+//   }
+// }
+
+// const product = new ProductEntity(1, "LED Light", 89.99, 10);
+
+// console.log(product.getStock());
+
+// product.updateStock(20);
+
+// console.log(product.getStock());
+
+// const product = new ProductEntity(1, "LED Light", 89.99, 10);
+
+// const sellable: Sellable = product;
+
+// console.log(sellable.getPrice());
+
+const service = {
+  getPrice(): number {
+    return 199;
+  },
 };
 
-try {
-  assertIsProduct(apiData);
+const anotherSellable: Sellable = service;
 
-  console.log("Product:", apiData.name);
-} catch (error) {
-  if (error instanceof Error) {
-    console.log("Validation error:", error.message);
-  } else {
-    console.log("Unknown error");
-  }
-} finally {
-  console.log("Validation finished");
-}
+const classProducts: BaseProduct[] = [
+  new PhysicalProduct(1, "LED Light", 100),
+  new DiscountProduct(2, "Speaker", 200, 0.2),
+];
+
+classProducts.forEach((product) => {
+  console.log(product.getDisplayName(), product.getPrice());
+});
