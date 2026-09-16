@@ -13,7 +13,7 @@ export abstract class BaseProduct {
 }
 
 export class PhysicalProduct extends BaseProduct {
-  getPrice(): number {
+  override getPrice(): number {
     return this.price;
   }
 }
@@ -28,7 +28,11 @@ export class DiscountProduct extends BaseProduct {
     super(id, name, price);
   }
 
-  getPrice(): number {
+  override getPrice(): number {
     return this.price * (1 - this.discountRate);
+  }
+
+  override getDisplayName(): string {
+    return `[Discount] ${super.getDisplayName()}`;
   }
 }

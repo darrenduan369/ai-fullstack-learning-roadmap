@@ -41,8 +41,12 @@ import {
   type SortDirection,
 } from "./types/product";
 
-import { ProductEntity } from "./models/ProductEntity";
-import { Sellable } from "./types/constracts";
+import {
+  DiscountPricing,
+  NormalPricing,
+  ProductEntity,
+} from "./models/ProductEntity";
+import { Sellable } from "./types/contracts";
 import {
   BaseProduct,
   DiscountProduct,
@@ -354,7 +358,7 @@ import {
 //     },
 // };
 
-const originalProduct = products[0];
+// const originalProduct = products[0];
 
 // const updatedProduct = updateProduct(
 //     originalProduct,
@@ -617,19 +621,36 @@ const originalProduct = products[0];
 
 // console.log(sellable.getPrice());
 
-const service = {
-  getPrice(): number {
-    return 199;
-  },
-};
+// const service = {
+//   getPrice(): number {
+//     return 199;
+//   },
+// };
 
-const anotherSellable: Sellable = service;
+// const anotherSellable: Sellable = service;
 
-const classProducts: BaseProduct[] = [
-  new PhysicalProduct(1, "LED Light", 100),
-  new DiscountProduct(2, "Speaker", 200, 0.2),
-];
+// const classProducts: BaseProduct[] = [
+//   new PhysicalProduct(1, "LED Light", 100),
+//   new DiscountProduct(2, "Speaker", 200, 0.2),
+// ];
 
-classProducts.forEach((product) => {
-  console.log(product.getDisplayName(), product.getPrice());
-});
+// classProducts.forEach((product) => {
+//   console.log(product.getDisplayName(), product.getPrice());
+// });
+
+// const classProducts: BaseProduct[] = [
+//   new PhysicalProduct(1, "LED Light", 100),
+//   new DiscountProduct(2, "Speaker", 200, 0.2),
+// ];
+
+// classProducts.forEach((product) => {
+//   console.log(product.getDisplayName(), product.getPrice());
+// });
+
+const normalPricing = new NormalPricing();
+
+const discountPricing = new DiscountPricing(0.2);
+
+console.log(normalPricing.calculate(100));
+
+console.log(discountPricing.calculate(100));

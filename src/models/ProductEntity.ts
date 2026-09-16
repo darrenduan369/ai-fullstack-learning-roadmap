@@ -1,4 +1,4 @@
-import { Sellable, StockManageable } from "../types/constracts";
+import { PricingStrategy, Sellable, StockManageable } from "../types/contracts";
 
 export class ProductEntity implements Sellable, StockManageable {
   constructor(
@@ -22,5 +22,19 @@ export class ProductEntity implements Sellable, StockManageable {
     }
 
     this.stock = newStock;
+  }
+}
+
+export class NormalPricing implements PricingStrategy {
+  calculate(price: number): number {
+    return price;
+  }
+}
+
+export class DiscountPricing implements PricingStrategy {
+  constructor(private rate: number) {}
+
+  calculate(price: number): number {
+    return price * (1 - this.rate);
   }
 }
