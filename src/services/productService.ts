@@ -349,3 +349,31 @@ export function getRequiredProductById(
 
   return product;
 }
+
+export function fetchProductById(id: number): Promise<Product> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const product = products.find((product) => product.id === id);
+
+      if (!product) {
+        reject(new Error(`Product ${id} not found`));
+        return;
+      }
+
+      resolve(product);
+    }, 1000);
+  });
+}
+
+export function fetchProductMessage(shouldFail: boolean): Promise<string> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldFail) {
+        reject(new Error("Failed to load product"));
+        return;
+      }
+
+      resolve("Product loaded successfully");
+    }, 1000);
+  });
+}

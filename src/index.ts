@@ -28,6 +28,8 @@ import {
   assertIsProduct,
   ProductNotFoundError,
   getRequiredProductById,
+  fetchProductById,
+  fetchProductMessage,
 } from "./services/productService";
 
 import { products } from "./data/products";
@@ -52,6 +54,7 @@ import {
   DiscountProduct,
   PhysicalProduct,
 } from "./models/BaseProduct";
+import { waitForMessage } from "./async/asyncDemo";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -647,10 +650,65 @@ import {
 //   console.log(product.getDisplayName(), product.getPrice());
 // });
 
-const normalPricing = new NormalPricing();
+// const normalPricing = new NormalPricing();
 
-const discountPricing = new DiscountPricing(0.2);
+// const discountPricing = new DiscountPricing(0.2);
 
-console.log(normalPricing.calculate(100));
+// console.log(normalPricing.calculate(100));
 
-console.log(discountPricing.calculate(100));
+// console.log(discountPricing.calculate(100));
+
+// console.log("Start");
+
+// waitForMessage().then((message) => {
+//   console.log(message);
+// });
+
+// console.log("End");
+
+// async function runAsyncDemo(): Promise<void> {
+//   console.log("Async/await start");
+
+//   const message = await waitForMessage();
+
+//   console.log(message);
+
+//   console.log("Async/await end");
+// }
+
+// runAsyncDemo();
+
+// console.log("Outside async function");
+
+async function runProductDemo(): Promise<void> {
+  try {
+    const product = await fetchProductById(999);
+
+    console.log("Product:", product.name);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("Error:", error.message);
+    }
+  }
+}
+runProductDemo();
+
+async function runDemo(): Promise<void> {
+  console.log("Loading: true");
+
+  try {
+    const message = await fetchProductMessage(false);
+
+    console.log(message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    }
+  } finally {
+    console.log("Loading: false");
+  }
+}
+
+// fetchProductMessage(false);
+
+// fetchProductMessage(true);
