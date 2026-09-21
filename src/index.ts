@@ -2,9 +2,12 @@ import { getField, sum, updateField } from "./utils/objectUtils";
 
 import {
   createTodo,
+  deleteTodo,
   fetchTodo,
   fetchTodos,
   fetchTodosByQuery,
+  replaceTodo,
+  Todo,
   updateTodo,
 } from "./api/httpDemo";
 
@@ -63,6 +66,7 @@ import {
   PhysicalProduct,
 } from "./models/BaseProduct";
 import { waitForMessage } from "./async/asyncDemo";
+
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -795,8 +799,8 @@ import { waitForMessage } from "./async/asyncDemo";
 async function runCreateTodoDemo(): Promise<void> {
   try {
     const newTodo = await createTodo({
-      userId: 1,
-      title: "Learn POST requests",
+      userId: 6,
+      title: "Learn POST requests...",
       completed: false,
     });
 
@@ -808,23 +812,64 @@ async function runCreateTodoDemo(): Promise<void> {
   }
 }
 
-// runCreateTodoDemo();
+runCreateTodoDemo();
 
 // PUT → 用一份完整数据替换原资源
 // PATCH → 只修改部分字段
 // PATCH方式
-async function runUpdateTodoDemo(): Promise<void> {
-  try {
-    const updatedTodo = await updateTodo(1, {
-      completed: true,
-    });
+// async function runUpdateTodoDemo(): Promise<void> {
+//   try {
+//     const updatedTodo = await updateTodo(1, {
+//       completed: true,
+//     });
 
-    console.log("Updated todo:", updatedTodo);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log("Update failed:", error.message);
-    }
-  }
-}
+//     console.log("Updated todo:", updatedTodo);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log("Update failed:", error.message);
+//     }
+//   }
+// }
 
-runUpdateTodoDemo();
+// runUpdateTodoDemo();
+
+// PUT方式
+// async function runReplaceTodoDemo(): Promise<void> {
+//   try {
+//     const todo = await replaceTodo(1, {
+//       userId: 1,
+//       title: "Learn PUT requests",
+//       completed: true,
+//     });
+
+//     console.log("Replaced todo:", todo);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log(
+//         "Replace failed:",
+//         error.message,
+//       );
+//     }
+//   }
+// }
+
+// runReplaceTodoDemo();
+
+
+// DELETE + 204 No Content
+// async function runDeleteTodoDemo(): Promise<void> {
+//   try {
+//     await deleteTodo(1);
+
+//     console.log("Todo deleted successfully");
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log(
+//         "Delete failed:",
+//         error.message,
+//       );
+//     }
+//   }
+// }
+
+// runDeleteTodoDemo();
