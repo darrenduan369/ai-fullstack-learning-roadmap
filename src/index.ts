@@ -1,6 +1,14 @@
 import { getField, sum, updateField } from "./utils/objectUtils";
 
 import {
+  createTodo,
+  fetchTodo,
+  fetchTodos,
+  fetchTodosByQuery,
+  updateTodo,
+} from "./api/httpDemo";
+
+import {
   getFeaturedProducts,
   getProductsByCategory,
   calculateTotalInventoryValue,
@@ -680,35 +688,143 @@ import { waitForMessage } from "./async/asyncDemo";
 
 // console.log("Outside async function");
 
-async function runProductDemo(): Promise<void> {
-  try {
-    const product = await fetchProductById(999);
+// async function runProductDemo(): Promise<void> {
+//   try {
+//     const product = await fetchProductById(999);
 
-    console.log("Product:", product.name);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log("Error:", error.message);
-    }
-  }
-}
-runProductDemo();
+//     console.log("Product:", product.name);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log("Error:", error.message);
+//     }
+//   }
+// }
+// runProductDemo();
 
-async function runDemo(): Promise<void> {
-  console.log("Loading: true");
+// async function runDemo(): Promise<void> {
+//   console.log("Loading: true");
 
-  try {
-    const message = await fetchProductMessage(false);
+//   try {
+//     const message = await fetchProductMessage(false);
 
-    console.log(message);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log(error.message);
-    }
-  } finally {
-    console.log("Loading: false");
-  }
-}
+//     console.log(message);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log(error.message);
+//     }
+//   } finally {
+//     console.log("Loading: false");
+//   }
+// }
 
 // fetchProductMessage(false);
 
 // fetchProductMessage(true);
+
+// GET方式
+// async function runHttpDemo(): Promise<void> {
+//   try {
+//     const data = await fetchTodo();
+
+//     console.log("Response data:", data);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log("Request failed:", error.message);
+//     } else {
+//       console.log("Unknown error");
+//     }
+//   }
+// }
+
+// runHttpDemo();
+
+// async function runTodoDemo(): Promise<void> {
+//   try {
+//     const todo = await fetchTodo();
+
+//     console.log(todo.id, todo.title, todo.completed);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log("Request failed:", error.message);
+//     } else {
+//       console.log("Unknown error");
+//     }
+//   }
+// }
+
+// runTodoDemo();
+
+// async function runTodoListDemo(): Promise<void> {
+//   try {
+//     const todos = await fetchTodos();
+
+//     const completedTodos = todos.filter((todo) => todo.completed);
+
+//     const incompleteTodos = todos.filter((todo) => !todo.completed);
+
+//     console.log("Todo count:", todos.length);
+
+//     console.log("First todo:", todos[0]?.title);
+
+//     console.log("Completed count:", completedTodos.length);
+
+//     console.log("Incomplete count:", incompleteTodos.length);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log("Request failed:", error.message);
+//     }
+//   }
+// }
+
+// runTodoListDemo();
+
+// fetchTodosByQuery({
+//   userId: 1,
+// });
+
+// fetchTodosByQuery({
+//   completed: false,
+// });
+
+// fetchTodosByQuery({
+//   userId: 1,
+//   completed: false,
+// });
+
+// POST方式
+async function runCreateTodoDemo(): Promise<void> {
+  try {
+    const newTodo = await createTodo({
+      userId: 1,
+      title: "Learn POST requests",
+      completed: false,
+    });
+
+    console.log("Created todo:", newTodo);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("Create failed:", error.message);
+    }
+  }
+}
+
+// runCreateTodoDemo();
+
+// PUT → 用一份完整数据替换原资源
+// PATCH → 只修改部分字段
+// PATCH方式
+async function runUpdateTodoDemo(): Promise<void> {
+  try {
+    const updatedTodo = await updateTodo(1, {
+      completed: true,
+    });
+
+    console.log("Updated todo:", updatedTodo);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("Update failed:", error.message);
+    }
+  }
+}
+
+runUpdateTodoDemo();
