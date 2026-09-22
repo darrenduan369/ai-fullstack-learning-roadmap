@@ -1,3 +1,4 @@
+import { ApiResponse } from "../types/api";
 import { request } from "./httpClient";
 
 export interface Todo {
@@ -64,27 +65,32 @@ export function isTodoArray(value: unknown): value is Todo[] {
 
 // GET方式优化版
 export async function fetchTodo(): Promise<Todo> {
-  return request<Todo>(
-    "https://jsonplaceholder.typicode.com/todos/1",
-  );
+  return request<Todo>("https://jsonplaceholder.typicode.com/todos/1", isTodo);
 }
 
+// export async function fetchTodos(): Promise<Todo[]> {
+//   const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+
+//   console.log("Todo list status:", response.status);
+
+//   if (!response.ok) {
+//     throw new Error(`HTTP ${response.status}`);
+//   }
+
+//   const data: unknown = await response.json();
+
+//   if (!isTodoArray(data)) {
+//     throw new Error("Invalid Todo list response");
+//   }
+
+//   return data;
+// }
+
 export async function fetchTodos(): Promise<Todo[]> {
-  const response = await fetch("https://jsonplaceholder.typicode.com/todos");
-
-  console.log("Todo list status:", response.status);
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
-
-  const data: unknown = await response.json();
-
-  if (!isTodoArray(data)) {
-    throw new Error("Invalid Todo list response");
-  }
-
-  return data;
+  return request<Todo[]>(
+    "https://jsonplaceholder.typicode.com/todos",
+    isTodoArray,
+  );
 }
 
 export async function fetchTodosByQuery(query: TodoQuery): Promise<Todo[]> {
@@ -146,19 +152,14 @@ export async function fetchTodosByQuery(query: TodoQuery): Promise<Todo[]> {
 // }
 
 // POST 优化版
-export async function createTodo(
-  input: CreateTodoInput,
-): Promise<Todo> {
-  return request<Todo>(
-    "https://jsonplaceholder.typicode.com/todos",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(input),
+export async function createTodo(input: CreateTodoInput): Promise<Todo> {
+  return request<Todo>("https://jsonplaceholder.typicode.com/todos", isTodo, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(input),
+  });
 }
 
 // PUT → 用一份完整数据替换原资源
@@ -193,7 +194,6 @@ export async function updateTodo(
 
   return data;
 }
-
 
 export async function deleteTodo(id: number): Promise<void> {
   const response = await fetch(

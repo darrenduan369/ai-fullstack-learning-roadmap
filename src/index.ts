@@ -6,6 +6,7 @@ import {
   fetchTodo,
   fetchTodos,
   fetchTodosByQuery,
+  isTodoArray,
   replaceTodo,
   Todo,
   updateTodo,
@@ -66,7 +67,7 @@ import {
   PhysicalProduct,
 } from "./models/BaseProduct";
 import { waitForMessage } from "./async/asyncDemo";
-
+import { request } from "./api/httpClient";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -744,9 +745,9 @@ import { waitForMessage } from "./async/asyncDemo";
 
 // async function runTodoDemo(): Promise<void> {
 //   try {
-//     const todo = await fetchTodo();
+//     const response = await fetchTodo();
 
-//     console.log(todo.id, todo.title, todo.completed);
+//     console.log("response:", response);
 //   } catch (error) {
 //     if (error instanceof Error) {
 //       console.log("Request failed:", error.message);
@@ -796,23 +797,23 @@ import { waitForMessage } from "./async/asyncDemo";
 // });
 
 // POST方式
-async function runCreateTodoDemo(): Promise<void> {
-  try {
-    const newTodo = await createTodo({
-      userId: 6,
-      title: "Learn POST requests...",
-      completed: false,
-    });
+// async function runCreateTodoDemo(): Promise<void> {
+//   try {
+//     const newTodo = await createTodo({
+//       userId: 6,
+//       title: "Learn POST requests...",
+//       completed: false,
+//     });
 
-    console.log("Created todo:", newTodo);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log("Create failed:", error.message);
-    }
-  }
-}
+//     console.log("Created todo:", newTodo);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       console.log("Create failed:", error.message);
+//     }
+//   }
+// }
 
-runCreateTodoDemo();
+// runCreateTodoDemo();
 
 // PUT → 用一份完整数据替换原资源
 // PATCH → 只修改部分字段
@@ -854,7 +855,6 @@ runCreateTodoDemo();
 // }
 
 // runReplaceTodoDemo();
-
 
 // DELETE + 204 No Content
 // async function runDeleteTodoDemo(): Promise<void> {
