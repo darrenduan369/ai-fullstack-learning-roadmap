@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../config/apiConfig";
 import { ApiResponse } from "../types/api";
 
 // export async function request<T>(
@@ -37,11 +38,11 @@ import { ApiResponse } from "../types/api";
 export type Validator<T> = (value: unknown) => value is T;
 
 export async function request<T>(
-  url: string,
+  path: string,
   validator: Validator<T>,
   options?: RequestInit,
 ): Promise<T> {
-  const response = await fetch(url, options);
+  const response = await fetch(`${API_BASE_URL}${path}`, options);
 
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);

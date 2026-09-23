@@ -1,12 +1,12 @@
 {
   "name": "ts-learning",
   "version": "1.0.0",
-
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "node --env-file=.env dist/index.js"
   },
-
   "devDependencies": {
+    "@types/node": "^26.6.2",
     "typescript": "^7.0.2"
   }
 }

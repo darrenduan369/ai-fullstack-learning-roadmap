@@ -68,6 +68,7 @@ import {
 } from "./models/BaseProduct";
 import { waitForMessage } from "./async/asyncDemo";
 import { request } from "./api/httpClient";
+import { API_BASE_URL } from "./config/apiConfig";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -873,3 +874,5 @@ import { request } from "./api/httpClient";
 // }
 
 // runDeleteTodoDemo();
+
+console.log("API Base URL:", API_BASE_URL);
