@@ -10,6 +10,8 @@ import type {
   ProductSearchOptions,
 } from "../types/product";
 
+import { ProductNotFoundError, ProductValidationError } from "../errors";
+
 export function getFeaturedProducts(products: readonly Product[]): Product[] {
   // 返回所有精选产品
   return products.filter((product) => product.featured);
@@ -306,35 +308,6 @@ export function searchProduct(
 
     return true;
   });
-}
-
-export function isProduct(value: unknown): value is Product {
-  if (typeof value !== "object" || value === null) {
-    return false;
-  }
-
-  return "id" in value && "name" in value && "price" in value;
-}
-
-export function assertIsProduct(value: unknown): asserts value is Product {
-  if (!isProduct(value)) {
-    throw new ProductValidationError("Invalid product data");
-  }
-}
-
-export class ProductValidationError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ProductValidationError";
-  }
-}
-
-export class ProductNotFoundError extends Error {
-  constructor(public readonly productId: number) {
-    super(`Product ${productId} was not found`);
-
-    this.name = "ProductNotFoundError";
-  }
 }
 
 export function getRequiredProductById(

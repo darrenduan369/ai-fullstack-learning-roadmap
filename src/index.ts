@@ -6,11 +6,9 @@ import {
   fetchTodo,
   fetchTodos,
   fetchTodosByQuery,
-  isTodoArray,
   replaceTodo,
-  Todo,
   updateTodo,
-} from "./api/httpDemo";
+} from "./api";
 
 import {
   getFeaturedProducts,
@@ -36,13 +34,12 @@ import {
   getPriceRange,
   findProduct,
   searchProduct,
-  isProduct,
-  assertIsProduct,
-  ProductNotFoundError,
   getRequiredProductById,
   fetchProductById,
   fetchProductMessage,
 } from "./services/productService";
+
+import { isProduct, assertIsProduct } from "./validators";
 
 import { products } from "./data/products";
 
