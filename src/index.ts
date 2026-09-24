@@ -67,6 +67,10 @@ import { waitForMessage } from "./async/asyncDemo";
 import { request } from "./api/httpClient";
 import { API_BASE_URL } from "./config/apiConfig";
 
+import type { RequestState } from "./types";
+import type { Todo } from "./types";
+import { runTodoStateDemo } from "./demos/requestStateDemo";
+
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
 
@@ -872,4 +876,40 @@ import { API_BASE_URL } from "./config/apiConfig";
 
 // runDeleteTodoDemo();
 
-console.log("API Base URL:", API_BASE_URL);
+// console.log("API Base URL:", API_BASE_URL);
+
+// L19
+let todoState: RequestState<Todo> = {
+  status: "loading",
+};
+
+// todoState = {
+//   status: "success",
+//   data: {
+//     userId: 1,
+//     id: 1,
+//     title: "Learn TypeScript",
+//     completed: false,
+//   },
+// };
+
+todoState = {
+  status: "error",
+  message: "Failed to load todo",
+};
+
+// function printTodoState(state: RequestState<Todo>): void {
+//   if (state.status === "loading") {
+//     console.log("Loading...");
+//     return;
+//   }
+
+//   if (state.status === "error") {
+//     console.log("Error:", state.message);
+//     return;
+//   }
+
+//   console.log("Todo:", state.data.title);
+// }
+
+runTodoStateDemo();

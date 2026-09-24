@@ -5,3 +5,5 @@ export type {
   UpdateTodoInput,
   ReplaceTodoInput,
 } from "./todo";
+
+export type { RequestState } from "./requestState";
