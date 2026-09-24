@@ -5,8 +5,10 @@
 ## 目录
 
 - [记录口径与分支证据](#scope)
+- [Maintenance Rules](#maintenance-rules)
 - [课程时间索引](#lessons)
 - [每课内容与排查入口](#details)
+- [Current Progress](#progress)
 - [工程变更与其他提交](#history)
 - [文件与问题检索](#lookup)
 - [需求处理流水](#requests)
@@ -15,7 +17,7 @@
 <a id="scope"></a>
 ## 记录口径与分支证据
 
-本档案根据本地 `git log --all`、提交差异、`git reflog --all` 和现有源码整理，覆盖当前可见的 30 条历史提交。此前完整聊天、正式上课起止时间和需求模板未保存在仓库中；课程标题和目标根据代码及提交还原。未提交内容明确标为“待提交”，已删除且 Git 不可见的内容不在覆盖范围内。
+本档案根据本地 `git log --all`、提交差异、`git reflog --all` 和现有源码整理，覆盖当前可见的 31 条历史提交。此前完整聊天、正式上课起止时间和需求模板未保存在仓库中；课程标题和目标根据代码及提交还原。未提交内容明确标为“待提交”，已删除且 Git 不可见的内容不在覆盖范围内。
 
 表内时间为 Git 作者时间，时区均为 `+08:00`；本次核对的课程提交中，作者时间与提交者时间相同。提交时间不代表上课开始或结束时间。历史验证结果没有可靠记录，不能由“已经提交”推断“测试通过”。
 
@@ -27,10 +29,24 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 
 `agents/codex` 当前指向 `a561b1d`，但 reflog 显示该分支在 2026-08-12 才从 `origin/main` 创建；`a561b1d` 实际在 2026-08-08 的 `main` 上提交。不能用当前包含分支反推历史创建分支。`origin/main` 是本地保存的远程跟踪状态，本次没有联网刷新。
 
+<a id="maintenance-rules"></a>
+## Maintenance Rules
+
+- 本文件是项目学习记录的主档和后续维护基准；`docs/TypeScript-Learning-Trace.docx` 是语义同步的阅读版。
+- 只记录实际完成的课程；计划主题不得标记为 Completed。保持既有课程编号稳定，除非用户明确要求，否则不合并、拆分或重编号已完成课程。
+- 当前源码是实现细节的首要证据；用户明确提供的课程事实优先于 AI 推测。无法确认的内容必须标为未知，不得为了完整而补写。
+- 文件重构或移动时更新当前路径，但不得用最终目录结构改写历史学习事实。更新某一课时避免重写无关课程。
+- 明确区分“已学习概念”“当前实现”“临时实验”和“未来计划”。仅当临时实验实质帮助理解课程时才记录；已删除的演示不得描述为当前正式能力。
+- 已引入但未被当前流程采用的概念，应写为“introduced / practiced”，不得描述为 fully implemented。例如仅定义但未用于当前请求流的类型需要明确说明。
+- 描述应简洁、可验证，避免宽泛或宣传性措辞。每次维护前先核对实际源码路径、Git 状态与相关提交。
+- Markdown 与 DOCX 必须保持课程编号、标题、状态、Current Progress、Next Lesson 和核心事实一致。
+- 每次维护学习记录时，都要从当前 `HEAD` 枚举可达 Git 提交，并将课程索引未覆盖的新增提交实时增量补入“工程变更与其他提交”；不得只更新课程表。尚未提交的工作区改动不计入提交表，应在对应 REQ 中标为待提交。
+- 不得在文档中暴露 API key、密码、token、凭据、真实 `.env` 值或其他秘密。可以记录 `.env.example` 及占位符，但不得复制本地 `.env` 内容。
+- 源码结构可以演进，但课程历史必须保持时间顺序与事实稳定。
 <a id="lessons"></a>
 ## 课程时间索引
 
-以下每行对应一个学习单元；message 保留 Git 原始文本。L01～L15、L17～L18 的分支证据为 M（`main`）；L16 只在当前克隆的 `main` fast-forward 记录中可见，原始创建分支记为 U。
+以下每行对应一个学习单元；message 保留 Git 原始文本。L01～L15、L17～L18 的分支证据为 M（`main`）；L16 的 `ab7563f` 只在当前克隆的 `main` fast-forward 记录中可见，原始创建分支记为 U，`d51289d` 为 M。
 
 | 编号 / 课程 | 提交时间（+08:00） | 提交 | 原始 message |
 | --- | --- | --- | --- |
@@ -46,12 +62,12 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 | [L10 函数重载与类型守卫](#l10) | 2026-09-05 19:18:36 | `beca5ae` | feat: add overloaded product search and runtime type validation |
 | [L11 断言函数与自定义错误](#l11) | 2026-09-07 22:08:26；2026-09-12 18:03:39 | `8c71019`；`6e08a69` | feat: add product assertions and error handling practice；feat: practice TypeScript classes, interfaces, and abstract classes |
 | [L12 接口、抽象类与多态](#l12) | 2026-09-12 18:03:39 | `6e08a69` | feat: practice TypeScript classes, interfaces, and abstract classes |
-| [L13 方法重写与策略组合](#l13) | 2026-09-16 11:02:40 | `1779069` | feat: practice inheritance, polymorphism, and composition |
-| [L14 Promise、async/await 与异步错误](#l14) | 2026-09-17 17:53:42 | `4c72899` | feat: practice Promise, async await, and async error handling |
-| [L15 Fetch、查询参数与 POST/PATCH](#l15) | 2026-09-21 17:54:49 | `d1d3933` | feat: practice fetch requests, query params, POST, and PATCH |
-| [L16 DELETE、PUT 与请求复用](#l16) | 2026-09-21 21:10:01 | `ab7563f` | feat: add DELETE, PUT, and reusable HTTP request helper |
-| [L17 泛型 HTTP 客户端与运行时校验](#l17) | 2026-09-22 16:43:56 | `d51289d` | feat: add typed HTTP client with runtime response validation |
-| [L18 环境变量与 API 配置](#l18) | 2026-09-23 14:42:04 | `107d9b0` | feat: add environment-based API configuration |
+| [L13 继承、多态与组合](#l13) | 2026-09-16 11:02:40 | `1779069` | feat: practice inheritance, polymorphism, and composition |
+| [L14 Promise、async/await 与异步错误处理](#l14) | 2026-09-17 17:53:42 | `4c72899` | feat: practice Promise, async await, and async error handling |
+| [L15 Fetch API 与 HTTP 请求](#l15) | 2026-09-21 17:54:49 | `d1d3933` | feat: practice fetch requests, query params, POST, and PATCH |
+| [L16 DELETE、PUT、可复用 HTTP 客户端与运行时校验](#l16) | 2026-09-21 21:10:01；2026-09-22 16:43:56 | `ab7563f`；`d51289d` | feat: add DELETE, PUT, and reusable HTTP request helper；feat: add typed HTTP client with runtime response validation |
+| [L17 API 基础地址、环境变量与配置](#l17) | 2026-09-23 14:42:04 | `107d9b0` | feat: add environment-based API configuration |
+| [L18 模块组织与 API 层重构](#l18) | 2026-09-23 17:21:40 | `fdfdb79` | refactor: organize project modules and update learning trace |
 
 <a id="details"></a>
 ## 每课内容与排查入口
@@ -172,69 +188,109 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 - 排查重点：private 和 protected 只提供 TypeScript 层面的访问约束；折扣率当前没有限制在 0～1；文件名 `constracts.ts` 的拼写偏差已在 L13 随 `1779069` 更名并同步引用，见 Q09；折扣率边界仍未处理。
 
 <a id="l13"></a>
-### L13：方法重写与策略组合
+### L13：继承、多态与组合
 
-- 学习目标：在继承与多态基础上练习方法重写，并用组合把可替换的定价算法从产品实体中拆出。
-- 核心知识与代码实践：子类使用 `override` 明确重写 `getPrice` 和 `getDisplayName`，通过 `super.getDisplayName()` 复用父类实现；新增 `PricingStrategy` 契约、`NormalPricing` 与 `DiscountPricing`，以统一的 `calculate(price)` 调用不同算法。
-- 代码定位：`src/models/BaseProduct.ts`、`src/models/ProductEntity.ts`、`src/types/contracts.ts`、`src/index.ts`。本课同时将 `src/types/constracts.ts` 更名为 `contracts.ts` 并修正引用，解决 Q09。
-- 提交与分支证据：`1779069`，2026-09-16 11:02:40 +08:00，`main`；完整 message 为 `feat: practice inheritance, polymorphism, and composition`。
-- 验证：历史提交未保存独立测试结果；2026-09-23 对已提交的 `107d9b0` 快照执行独立构建验证，结果见 REQ-20260923-01。
-- 排查重点：`override` 只校验确实重写父类成员；组合允许替换算法，但当前 `DiscountPricing` 与 `DiscountProduct` 都未限制折扣率范围，见 Q08。
+- **Learning Goals：**理解 `extends`、`super()`、`override`、抽象基类与子类；通过基类引用观察运行时多态；比较继承与组合，并练习 Strategy 风格设计。
+- **Key Concepts：**base class、subclass、abstract class、interface、concrete class、polymorphism、composition、Strategy pattern。
+- **Practice / Implementation：**基于 `BaseProduct` 创建 `PhysicalProduct` 与 `DiscountProduct`；使用 `BaseProduct[]` 保存不同子类，并通过基类引用调用重写后的 `getPrice()` / `getDisplayName()`；定义 `PricingStrategy`，实现 `NormalPricing` 与 `DiscountPricing`，比较继承的 is-a 与组合的 has-a / uses-a 关系。
+- **Important Notes：**组合允许定价行为独立替换，通常比继续扩展继承层次更灵活。本课还将历史拼写 `constracts.ts` 修正为 `contracts.ts`，但文件更名不改变课程知识点。
+- **Main Takeaway：**继承适合表达稳定的 is-a 关系；业务行为需要独立替换时，优先考虑组合。
+- **Related Project Files：**`src/models/BaseProduct.ts`、`src/models/ProductEntity.ts`、`src/types/contracts.ts`。
+- **提交与验证：**`1779069`，2026-09-16 11:02:40 +08:00，`main`；message：`feat: practice inheritance, polymorphism, and composition`。历史提交未保存独立运行结果；当前整体验证见 REQ-20260924-01。
+- **Status：Completed。**
 
 <a id="l14"></a>
-### L14：Promise、async/await 与异步错误
+### L14：Promise、async/await 与异步错误处理
 
-- 学习目标：理解 Promise 的 pending、fulfilled、rejected 流程，并用 `async`/`await` 组织成功、失败和清理逻辑。
-- 核心知识与代码实践：`waitForMessage` 用 `new Promise` 和 `setTimeout` 延迟完成；`fetchProductById` 根据产品是否存在调用 `resolve` 或 `reject`；`fetchProductMessage` 模拟可控失败；入口练习 `.then`、`await`、`try/catch/finally` 和同步代码与微任务/定时任务的执行顺序。
-- 代码定位：`src/async/asyncDemo.ts`；`src/services/productService.ts` 中的 `fetchProductById`、`fetchProductMessage`；`src/index.ts` 中的异步演示。
-- 提交与分支证据：`4c72899`，2026-09-17 17:53:42 +08:00，`main`；完整 message 为 `feat: practice Promise, async await, and async error handling`。
-- 验证：历史运行结果未知；2026-09-23 已提交的 `107d9b0` 快照独立编译通过。当前入口中的本课演示均已注释，本次未等待定时器逐例复验。
-- 排查重点：Promise 构造器回调应在成功或失败路径只结算一次；捕获值仍应按 `unknown` 思路用 `instanceof Error` 缩小。
+- **Learning Goals：**理解异步编程与 Promise 生命周期；使用 `async` / `await`；处理异步失败和清理逻辑。
+- **Key Concepts：**`Promise<T>`、pending、fulfilled、rejected、`resolve`、`reject`、`.then()`、`.catch()`、`async`、`await`、`try/catch/finally`。
+- **Practice / Implementation：**`waitForMessage(): Promise<string>` 使用 `setTimeout()` 模拟异步任务；`fetchProductById` 与 `fetchProductMessage` 分别练习成功和拒绝路径；入口示例通过 `.then()` 和 `await` 解包结果，并用 `try/catch/finally` 处理错误与加载状态。
+- **Important Notes：**`await` 只暂停当前 async 函数，不阻塞整个 JavaScript 运行时；async 函数始终返回 Promise。当前 CommonJS 学习配置不支持直接使用 top-level await，因此示例封装在 async 函数中。当前入口里的异步演示已注释，不属于正在自动运行的功能。
+- **Main Takeaway：**Promise 描述未来结果，`async` / `await` 让异步控制流更接近同步写法，但 rejected 状态仍必须显式处理。
+- **Related Project Files：**`src/async/asyncDemo.ts`、`src/services/productService.ts`、`src/index.ts`。
+- **提交与验证：**`4c72899`，2026-09-17 17:53:42 +08:00，`main`；message：`feat: practice Promise, async await, and async error handling`。历史定时器示例的运行输出未保存。
+- **Status：Completed。**
 
 <a id="l15"></a>
-### L15：Fetch、查询参数与 POST/PATCH
+### L15：Fetch API 与 HTTP 请求
 
-- 学习目标：通过 HTTP 请求练习外部 `unknown` 数据校验、查询字符串构造，以及创建和部分更新资源。
-- 核心知识与代码实践：定义 `Todo`、`TodoQuery`、`CreateTodoInput` 与 `UpdateTodoInput`；`isTodo`、`isTodoArray` 在运行时校验响应；`URLSearchParams` 生成查询参数；`fetchTodo`、`fetchTodos`、`fetchTodosByQuery`、`createTodo`、`updateTodo` 分别演示 GET、POST 和 PATCH；`fetchJson` 展示返回 `unknown` 的底层读取。
-- 代码定位：`src/api/httpDemo.ts`、`src/api/productApi.ts`、`src/index.ts`。
-- 提交与分支证据：`d1d3933`，2026-09-21 17:54:49 +08:00，`main`；完整 message 为 `feat: practice fetch requests, query params, POST, and PATCH`。
-- 验证：历史网络请求结果未知；2026-09-23 已提交的 `107d9b0` 快照独立编译通过。本次没有向公共占位 API 发起写请求。
-- 排查重点：TypeScript 类型不能验证网络响应，必须在 `response.json()` 后检查；请求 URL、状态码和响应体都属于运行时边界。
+- **Learning Goals：**调用真实 HTTP API，理解 `fetch()`、`Response` 与 JSON 解析；练习 GET、查询参数、POST、PATCH，并校验外部数据。
+- **Key Concepts：**`fetch()`、`Promise<Response>`、`response.status`、`response.ok`、`response.json()`、`unknown`、Type Guard、`URLSearchParams`、query string、`JSON.stringify()`、`Content-Type`。
+- **Practice / Implementation：**以 JSONPlaceholder 为练习 API；GET `/todos/1` 与 `/todos`；用 `Todo`、`isTodo`、`isTodoArray` 校验单条和列表响应；用 `TodoQuery` 与 `URLSearchParams` 组合 `userId` / `completed`；用 `CreateTodoInput = Omit<Todo, "id">` 组织 POST；用 `UpdateTodoInput = Partial<Pick<Todo, "title" | "completed">>` 组织 PATCH。
+- **Important Notes：**查询 `completed` 必须判断 `query.completed !== undefined`，因为 `false` 是有效值。JSONPlaceholder 当前返回原始 Todo JSON，不返回 `{ code, message, data }`；`ApiResponse<T>` 不能被描述为当前 Todo 请求的真实响应结构。
+- **Main Takeaway：**`fetch → Response → JSON → unknown → Type Guard → typed data`；TypeScript 声明不能替代运行时响应校验。
+- **Related Project Files：**当前路径为 `src/api/todoApi.ts`、`src/types/todo.ts`、`src/validators/todoValidator.ts`、`src/api/productApi.ts`；本课提交时 Todo 示例集中在历史文件 `src/api/httpDemo.ts`。
+- **提交与验证：**`d1d3933`，2026-09-21 17:54:49 +08:00，`main`；message：`feat: practice fetch requests, query params, POST, and PATCH`。本次未向公共 API 发起写请求。
+- **Status：Completed。**
 
 <a id="l16"></a>
-### L16：DELETE、PUT 与请求复用
+### L16：DELETE、PUT、可复用 HTTP 客户端与运行时校验
 
-- 学习目标：补齐资源删除与完整替换语义，并把重复的请求、状态检查和 JSON 解析提取为通用函数。
-- 核心知识与代码实践：`deleteTodo` 处理 DELETE 和无响应体场景；`replaceTodo` 配合 `ReplaceTodoInput` 演示 PUT；新增泛型 `request<T>` 统一调用 `fetch`、检查 `response.ok`，并为 204 返回 `undefined`；已有 GET/POST 示例开始复用请求助手。
-- 代码定位：`src/api/httpClient.ts`、`src/api/httpDemo.ts`、`src/index.ts`。
-- 提交与分支证据：`ab7563f`，2026-09-21 21:10:01 +08:00；当前克隆仅能确认它通过 2026-09-22 的 `main` fast-forward 拉取进入本地，原始创建分支未知；完整 message 为 `feat: add DELETE, PUT, and reusable HTTP request helper`。
-- 验证：历史网络请求结果未知；2026-09-23 已提交的 `107d9b0` 快照独立编译通过，本次未执行 DELETE 或 PUT。
-- 排查重点：本课 `request<T>` 中的类型断言只告诉编译器期望类型，并不证明服务器返回正确；该边界在 L17 用验证器收紧。
+- **Learning Goals：**补齐常见 REST 方法；理解 204 No Content、PUT 与 PATCH；抽取可复用请求逻辑；组合泛型与运行时校验。
+- **Key Concepts：**DELETE、PUT、PATCH、204 No Content、`request<T>()`、`Validator<T>`、generic type parameter、function reference、Type Guard、runtime validation、`as T` 的限制。
+- **Practice / Implementation：**练习 DELETE `/todos/:id`，理解 204 响应可能没有 JSON body；用 `ReplaceTodoInput` 练习 PUT 完整替换，并与 PATCH 部分更新比较；创建 `src/api/httpClient.ts`，将请求、状态检查、JSON 解析与验证器调用集中到 `request<T>()`。
+
+```ts
+export type Validator<T> = (value: unknown) => value is T;
+
+request<Todo>("/todos/1", isTodo);
+```
+
+- **Important Notes：**`Validator<T>` 是验证函数契约，`isTodo` 是 Todo 的具体实现；传递 `isTodo` 是传函数本身，`isTodo(data)` 是执行后的布尔结果。`<T>` 表示编译期预期，validator 才执行运行时验证；`as T` 只要求 TypeScript 信任开发者，不能验证 JSON。课程中曾故意用 `isTodoArray` 校验单条 Todo，触发 `Invalid response data`；这是理解边界的临时实验，不是当前正式功能。Zod 尚未正式引入或采用。
+- **Current Implementation：**当前 `request<T>` 会校验 `response.ok`、解析 JSON 并调用 validator；DELETE 仍由 `todoApi.ts` 单独处理，因此通用请求函数当前没有承担 204 无响应体分支。
+- **ApiResponse<T>：**`src/types/api.ts` 引入了通用响应包装概念，可供未来 Java 后端或其他 API 使用；当前 JSONPlaceholder Todo 流程并未采用它。
+- **Main Takeaway：**静态泛型和运行时验证解决不同问题，可靠的外部数据边界需要两者共同工作。
+- **Related Project Files：**`src/api/httpClient.ts`、`src/api/todoApi.ts`、`src/types/todo.ts`、`src/validators/todoValidator.ts`、`src/types/api.ts`。
+- **提交与验证：**`ab7563f`（2026-09-21 21:10:01 +08:00，原始创建分支未知）与 `d51289d`（2026-09-22 16:43:56 +08:00，`main`）；对应 messages 为 `feat: add DELETE, PUT, and reusable HTTP request helper`、`feat: add typed HTTP client with runtime response validation`。
+- **Status：Completed。**
 
 <a id="l17"></a>
-### L17：泛型 HTTP 客户端与运行时校验
+### L17：API 基础地址、环境变量与配置
 
-- 学习目标：让通用请求函数同时保留调用处的静态返回类型，并在运行时拒绝形状不正确的响应。
-- 核心知识与代码实践：定义 `Validator<T> = (value: unknown) => value is T`；`request<T>` 先把 JSON 保存为 `unknown`，再调用验证器后返回 `T`；`fetchTodo`、`fetchTodos`、`createTodo` 分别传入 `isTodo` 或 `isTodoArray`；新增泛型 `ApiResponse<T>` 记录常见响应包结构。
-- 代码定位：`src/api/httpClient.ts`、`src/api/httpDemo.ts`、`src/types/api.ts`、`src/index.ts`。
-- 提交与分支证据：`d51289d`，2026-09-22 16:43:56 +08:00，`main`；完整 message 为 `feat: add typed HTTP client with runtime response validation`。
-- 验证：历史网络请求结果未知；2026-09-23 已提交的 `107d9b0` 快照独立编译通过。本次未伪造错误响应验证 `Invalid response data` 分支。
-- 排查重点：验证器质量决定泛型返回值是否可信；`ApiResponse<T>` 当前仅定义未用于活动请求路径，不能把接口声明误认为实际响应包装。
+- **Learning Goals：**移除重复的硬编码完整 URL；分离配置与业务逻辑；理解 Node 环境变量、不同环境配置和本地配置保护。
+- **Key Concepts：**base URL、`process.env`、`string | undefined`、Fail Fast、`@types/node`、`.env`、`.env.example`、配置链。
+- **Practice / Implementation：**`src/config/apiConfig.ts` 集中读取 `API_BASE_URL`，缺失时立即抛错；`request()` 接收 path 并与基础地址拼接；安装 `@types/node`，`tsconfig.json` 使用 `"types": ["node"]`；`package.json` 保留 `build: tsc` 与 `start: node --env-file=.env dist/index.js`。
+
+```text
+.env → process.env.API_BASE_URL → apiConfig.ts
+→ API_BASE_URL → httpClient.ts → path → final URL
+```
+
+- **Important Notes：**Windows PowerShell 可能阻止 `npm.ps1`，本项目可使用 `npm.cmd run build` / `npm.cmd start`。`.env` 已由 `.gitignore` 排除；`.env.example` 可以记录变量名和占位模板。环境变量不天然等于秘密：API base URL、公开项目 ID 通常可公开，API key、密码、token 与数据库秘密必须保护。文档从不读取或复制真实 `.env` 值。
+- **Future Boundary：**当前 Node 项目使用 `process.env`；Astro / Vite 可能使用 `import.meta.env`，但尚未在本项目实现，不能标为已开始。
+- **Main Takeaway：**配置应集中、可验证并与业务逻辑解耦；缺失必要配置时应尽早失败。
+- **Related Project Files：**`src/config/apiConfig.ts`、`src/api/httpClient.ts`、`.env.example`、`.gitignore`、`package.json`、`package-lock.json`、`tsconfig.json`。
+- **提交与验证：**`107d9b0`，2026-09-23 14:42:04 +08:00，`main`；message：`feat: add environment-based API configuration`。
+- **Status：Completed。**
 
 <a id="l18"></a>
-### L18：环境变量与 API 配置
+### L18：模块组织与 API 层重构
 
-- 学习目标：把环境相关的 API 地址移出源码，并在应用启动时对缺失配置尽早失败。
-- 核心知识与代码实践：`.env.example` 提供 `API_BASE_URL` 示例；`apiConfig.ts` 读取 `process.env.API_BASE_URL` 并在缺失时抛错；`request<T>` 使用基础地址和相对路径组成 URL；`start` 脚本通过 Node `--env-file=.env` 加载配置；`tsconfig.json` 与 `@types/node` 提供 Node 环境类型。
-- 代码定位：`.env.example`、`src/config/apiConfig.ts`、`src/api/httpClient.ts`、`src/api/httpDemo.ts`、`src/index.ts`、`package.json`、`package-lock.json`、`tsconfig.json`。
-- 提交与分支证据：`107d9b0`，2026-09-23 14:42:04 +08:00，`main`；完整 message 为 `feat: add environment-based API configuration`。
-- 验证：2026-09-23 在系统临时目录导出已提交的 `107d9b0` 纯净快照，使用项目现有 TypeScript 工具链独立编译通过；运行快照入口并加载 `.env.example`，输出 `API Base URL: https://jsonplaceholder.typicode.com`。未执行真实网络请求。
-- 排查重点：`.env.example` 只保存示例，不应放入密钥；正式运行 `npm start` 需要本地 `.env`。当前仍有部分 Todo 函数直接使用相对 URL，见 Q10。
+- **Learning Goals：**应用单一职责与关注点分离；建立模块边界；组织 import/export；降低耦合、避免循环依赖，并形成更真实的项目结构。
+- **Key Concepts：**single responsibility、module boundary、`import`、`import type`、explicit export、barrel export、dependency direction、circular dependency、naming convention、refactoring。
+- **Practice / Implementation：**将 Todo 类型拆到 `types/todo.ts`，Todo 校验拆到 `validators/todoValidator.ts`，Todo HTTP 函数移动到 `api/todoApi.ts`；把产品校验和两种自定义错误分别移动到 validators/errors；新增 `api/index.ts`、`types/index.ts`、`validators/index.ts`、`errors/index.ts` 作为显式 barrel 入口；入口改为从 `./api` 与 `./validators` 导入。
+- **Import Boundary：**`import type` 只参与编译期类型检查，普通 import 会保留运行时值/函数/类依赖。barrel export 提供稳定的模块公共入口；当前 barrel 使用显式导出，没有滥用 `export *`。
+- **Dependency Direction：**目标方向为 `types → validators → api / services → index / consumer`，配置方向为 `config → httpClient`；应避免 api ↔ validator、service ↔ index、types → api 以及循环依赖。
+- **Important Notes：**重构的目标是行为不变、结构改善；当前文件职责已更清晰，但仍有可核实边界：`fetchTodosByQuery`、`updateTodo`、`deleteTodo`、`replaceTodo` 仍直接使用相对 URL；`productValidator.ts` 的 `isProduct` 仍只检查字段存在性，尚未完整校验必填字段类型；`ApiResponse<T>` 仅定义、未用于当前 Todo 请求流。
+- **Verified Conflict：**重构前 `ProductNotFoundError` 暴露只读 `productId`，当前提取后的 `src/errors/ProductNotFoundError.ts` 只接收 `id` 构造 message，没有保留该公开字段。因此不能把这次提交描述为完全行为等价；文档保留此事实，不自行修改源码。
+- **Main Takeaway：**模块化重构通过清晰职责和单向依赖降低维护成本；目录变整齐不等于自动保证运行时行为完全不变，仍需回归验证。
+- **Related Project Files：**`src/api/index.ts`、`src/api/todoApi.ts`、`src/api/httpClient.ts`、`src/types/index.ts`、`src/types/todo.ts`、`src/validators/index.ts`、`src/validators/todoValidator.ts`、`src/validators/productValidator.ts`、`src/errors/index.ts`、`src/errors/ProductNotFoundError.ts`、`src/errors/ProductValidationError.ts`、`src/services/productService.ts`、`src/index.ts`。
+- **提交与验证：**`fdfdb79`，2026-09-23 17:21:40 +08:00，`main`；message：`refactor: organize project modules and update learning trace`。当前整体验证见 REQ-20260924-01。
+- **Status：Completed。**
+
+<a id="progress"></a>
+## Current Progress
+
+- **Current Lesson：**Lesson 18 completed。
+- **Current Stage：**TypeScript fundamentals → OOP → async programming → HTTP/API integration → runtime validation → environment configuration → project modularization。
+- **Next Lesson：**Lesson 19 — Discriminated Unions and UI / Async State Modeling。
+- **Planned Focus：**loading、success、error、discriminated union、state modeling。
+- **Next Lesson Status：Planned。**Lesson 19 尚未完成，本次未实现其代码，也未将未来主题写入 L18。
 
 <a id="history"></a>
 ## 工程变更与其他提交
 
-本表补齐课程表之外的 12 条提交。历史修复只按差异描述，不猜测对话中的原因或验收结果。
+本表补齐课程表之外的 13 条提交。历史修复只按差异描述，不猜测对话中的原因或验收结果。每次文档维护均应以当前 `HEAD` 重新核对 Git 历史并增量更新本表。
 
 | 编号 | 时间（+08:00） | 提交 / 分支证据 | 原始 message | 内容与定位 |
 | --- | --- | --- | --- | --- |
@@ -250,37 +306,43 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 | E10 | 2026-09-05 14:49:26 | `9d70da4` / U | Add Senity to technologies list in README | README 技术列表增加 Senity（保留原拼写） |
 | E11 | 2026-09-05 14:50:12 | `21d04ae` / U | Update name format in README.md | README 姓名格式调整 |
 | E12 | 2026-09-05 19:18:45 | `9dbbfe0` / M | Merge branch 'main' of github.com:darrenduan369/ai-fullstack-learning-roadmap | 合并 main 历史；与当日重载课程区分 |
+| E13 | 2026-09-12 18:11:49 | `f5c5539` / M | docs: organize lessons 1 through 12 learning notes | 整理 L01～L12 学习记录；属于课程文档维护提交，不重复计为课程 |
 
 <a id="lookup"></a>
 ## 文件与问题检索
 
 ### 文件导航
 
-| 文件 | 职责 | 关联课程 |
+| 文件 | 当前职责 | 关联课程 |
 | --- | --- | --- |
-| [src/index.ts](../src/index.ts) | 演示入口，许多旧练习已注释 | 全部 |
-| [src/types/product.ts](../src/types/product.ts) | 产品模型、联合类型、工具类型、选项接口 | L02～L10 |
-| [src/data/products.ts](../src/data/products.ts) | 产品样例、库存、价格、供应商 | L02～L04 |
-| [src/services/productService.ts](../src/services/productService.ts) | 查询、更新、统计、校验和业务错误 | L02～L11 |
+| [src/index.ts](../src/index.ts) | 演示入口与模块消费者 | 全部、L18 |
+| [src/types/product.ts](../src/types/product.ts) | 产品模型、联合类型、工具类型和查询选项 | L02～L10 |
+| [src/data/products.ts](../src/data/products.ts) | 产品样例数据 | L02～L04 |
+| [src/services/productService.ts](../src/services/productService.ts) | 产品业务与异步逻辑 | L02～L14、L18 |
 | [src/utils/objectUtils.ts](../src/utils/objectUtils.ts) | 泛型字段读写与求和 | L06、L09 |
-| [src/types/contracts.ts](../src/types/contracts.ts) | 可销售、库存管理与定价策略接口契约 | L12～L13 |
-| [src/models/ProductEntity.ts](../src/models/ProductEntity.ts) | 实体类、接口实现、库存封装与定价策略实现 | L12～L13 |
-| [src/models/BaseProduct.ts](../src/models/BaseProduct.ts) | 抽象基类、继承、方法重写、折扣实现和多态 | L12～L13 |
+| [src/types/contracts.ts](../src/types/contracts.ts) | 可销售、库存管理与定价策略接口 | L12～L13 |
+| [src/models/ProductEntity.ts](../src/models/ProductEntity.ts) / [src/models/BaseProduct.ts](../src/models/BaseProduct.ts) | 实体、继承、方法重写、多态和定价策略 | L12～L13 |
 | [src/async/asyncDemo.ts](../src/async/asyncDemo.ts) | Promise 与延迟异步任务 | L14 |
-| [src/api/productApi.ts](../src/api/productApi.ts) | 返回 `unknown` 的基础 JSON 请求示例 | L15 |
-| [src/api/httpDemo.ts](../src/api/httpDemo.ts) | Todo 类型、响应校验与 GET/POST/PATCH/PUT/DELETE 示例 | L15～L18 |
-| [src/api/httpClient.ts](../src/api/httpClient.ts) | 泛型请求助手、运行时验证器与 API 基础地址拼接 | L16～L18 |
-| [src/types/api.ts](../src/types/api.ts) | 泛型 API 响应包类型 | L17 |
-| [src/config/apiConfig.ts](../src/config/apiConfig.ts) | 读取并校验 `API_BASE_URL` | L18 |
-| [package.json](../package.json) / [tsconfig.json](../tsconfig.json) | build/start 脚本、Node 环境类型与编译配置 | L01、L18 |
-
+| [src/api/productApi.ts](../src/api/productApi.ts) | 返回 `unknown` 的 JSON 请求示例 | L15 |
+| [src/api/todoApi.ts](../src/api/todoApi.ts) | Todo HTTP 请求 | L15～L18 |
+| [src/api/httpClient.ts](../src/api/httpClient.ts) | `request<T>`、`Validator<T>`、基础地址和响应校验 | L16～L17 |
+| [src/api/index.ts](../src/api/index.ts) | Todo API 显式 barrel exports | L18 |
+| [src/types/todo.ts](../src/types/todo.ts) / [src/types/index.ts](../src/types/index.ts) | Todo 类型及显式 barrel exports | L15、L18 |
+| [src/types/api.ts](../src/types/api.ts) | 尚未用于当前 Todo 流程的 `ApiResponse<T>` | L16 |
+| [src/validators/todoValidator.ts](../src/validators/todoValidator.ts) | Todo 运行时校验 | L15～L16、L18 |
+| [src/validators/productValidator.ts](../src/validators/productValidator.ts) | 产品守卫与断言；当前校验仍不完整 | L10～L11、L18 |
+| [src/validators/index.ts](../src/validators/index.ts) | 验证器显式 barrel exports | L18 |
+| [src/errors/ProductNotFoundError.ts](../src/errors/ProductNotFoundError.ts) / [src/errors/ProductValidationError.ts](../src/errors/ProductValidationError.ts) / [src/errors/index.ts](../src/errors/index.ts) | 产品错误类及显式 barrel exports | L11、L18 |
+| [src/config/apiConfig.ts](../src/config/apiConfig.ts) | 读取并 Fail Fast 校验 `API_BASE_URL` | L17 |
+| [.env.example](../.env.example) / [.gitignore](../.gitignore) | 环境变量模板与本地 `.env` 忽略规则 | L17 |
+| [package.json](../package.json) / [tsconfig.json](../tsconfig.json) | build/start、Node 类型与编译配置 | L01、L17 |
 ### 排查线索登记
 
 以下为基线代码阅读得到的现状或待明确边界，未在本次修复，亦未运行专门复现测试。后续修复应创建 REQ 记录并回链此编号。
 
 | 编号 / 现象 | 最短定位 | 来源 | 下一步验证与状态 |
 | --- | --- | --- | --- |
-| Q01 错误字段类型也可能通过校验 | isProduct → assertIsProduct | L10 / `beca5ae`、`8c71019` | 传 `{ id: "wrong", name: 123, price: null }`，当前逻辑会通过；待补充完整 Product 校验需求 |
+| Q01 错误字段类型也可能通过校验 | `src/validators/productValidator.ts`：isProduct → assertIsProduct | L10～L11、L18 | 传 `{ id: "wrong", name: 123, price: null }`，当前逻辑会通过；待补充完整 Product 校验需求 |
 | Q02 空列表价格为无穷值 | getPriceRange | L09 / `78c4afa` | 传空数组；需先确定空值、异常或其他返回约定 |
 | Q03 supplier.country 丢失 | updateProduct / updateSupplier / updateProductWithoutSupplier | L06 → L07 | 核对调用的是深一层合并还是浅替换；属于排查入口，未确认实际回归 |
 | Q04 不存在的 ID 取属性失败 | getProductById / searchProduct / createProductMap | L03、L08、L10 | 用 999 检查 undefined 分支；调用处需判断 |
@@ -288,8 +350,9 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 | Q06 旧练习没有输出 | src/index.ts 中对应注释块 | 各课入口 | 先确认是否注释及是否重新编译；不要同时启用同名 const 示例 |
 | Q07 负库存显示低库存 | getStockStatus | L03 / `163226a` | 用 -1、0、5、6 检查；待明确是否拒绝负数 |
 | Q08 折扣率可能超出合理范围 | DiscountProduct.constructor / getPrice | L12 / 暂存区 | 用 -0.1、1、1.2 检查；待明确是否限制在 0～1，本次不改代码 |
-| Q09 接口文件名疑似拼写错误 | `src/types/constracts.ts` 及其 imports | L12 → L13 / `1779069` | 已解决：更名为 `src/types/contracts.ts` 并同步 imports；2026-09-23 已提交的 `107d9b0` 快照独立编译通过 |
-| Q10 部分 Todo 请求仍使用相对 URL | `fetchTodosByQuery`、`updateTodo`、`deleteTodo`、`replaceTodo` | L15～L18 | 当前这些函数直接 `fetch("/todos...")`，Node 中不具备浏览器页面基础地址；待统一复用带 `API_BASE_URL` 的 `request` 或显式拼接完整 URL |
+| Q09 接口文件名疑似拼写错误 | 历史 `src/types/constracts.ts` 及其 imports | L12 → L13 / `1779069` | 已解决：更名为 `src/types/contracts.ts` 并同步 imports；当前路径已核对 |
+| Q10 部分 Todo 请求仍使用相对 URL | `src/api/todoApi.ts`：`fetchTodosByQuery`、`updateTodo`、`deleteTodo`、`replaceTodo` | L15～L18 | 当前这些函数直接 `fetch("/todos...")`，Node 中不具备浏览器页面基础地址；待统一复用带 `API_BASE_URL` 的 `request` 或显式拼接完整 URL |
+| Q11 模块重构后错误对象丢失 `productId` 属性 | `ProductNotFoundError` / `getRequiredProductById` | L11、L18 / `fdfdb79` | 重构前构造函数公开 `readonly productId`；当前独立错误类只用 id 生成 message。需确认是否恢复该字段，本次只记录、不改源码 |
 
 ### 常用追溯命令（PowerShell）
 
@@ -335,7 +398,9 @@ node dist/index.js
 | [REQ-20260909-02](#req-20260909-02) | 2026-09-09 | 排查 VS Code 打开 DOCX 显示乱码 | 已定位，无代码变更 | REQ-20260909-01 |
 | [REQ-20260909-03](#req-20260909-03) | 2026-09-09 | 约定每课提交后同步 Markdown 与 DOCX | 规则已建立，未提交 | REQ-20260908-01、REQ-20260909-01 |
 | [REQ-20260912-01](#req-20260912-01) | 2026-09-12 | 完善并统一整理前 12 课课程文档 | 两版文档已同步，未提交 | L01～L12 |
-| [REQ-20260923-01](#req-20260923-01) | 2026-09-23 | 根据提交与当前代码补录第 13～18 课并同步 Markdown/DOCX | 两版文档已同步，待提交 | L13～L18、Q09～Q10 |
+| [REQ-20260923-01](#req-20260923-01) | 2026-09-23 | 根据提交与当前代码补录第 13～18 课并同步 Markdown/DOCX | 已随 `fdfdb79` 提交 | L13～L18、Q09～Q10 |
+| [REQ-20260924-01](#req-20260924-01) | 2026-09-24 | 按课程事实校正 L13～L18、进度和长期维护规则 | Markdown/DOCX 已同步，待提交 | L13～L18、Q01、Q10～Q11 |
+| [REQ-20260924-02](#req-20260924-02) | 2026-09-24 | 补齐工程提交表并建立实时增量同步规则 | Markdown/DOCX 已同步，待提交 | E01～E13、REQ-20260924-01 |
 
 <a id="req-20260908-01"></a>
 ### REQ-20260908-01：建立可持续维护的追溯档案
@@ -393,21 +458,47 @@ node dist/index.js
 ### REQ-20260923-01：补录第 13～18 课并同步两版档案
 
 - 请求/记录时间：2026-09-23 15:42:49 +08:00。
-- 类型与状态：学习文档；完成，文档变更待提交。
+- 类型与状态：学习文档；已完成并提交。
 - 需求摘要与验收标准：依据当前窗口项目的相关记录，将已完成的第 13～18 课补录到 `docs/LEARNING-TRACE.md` 和 `docs/TypeScript-Learning-Trace.docx`；两版需包含课程日期时间、分支证据、真实提交 SHA、完整 message、学习主题、代码定位和验证结果。
 - 关联课程/问题/前序需求：L13～L18、Q09、Q10、REQ-20260909-03、REQ-20260912-01。
 - 原因与证据：Git 历史存在 `1779069`、`4c72899`、`d1d3933`、`ab7563f`、`d51289d`、`107d9b0` 六个连续课程提交，而旧档案截至 L12；逐提交核对作者/提交者时间、完整 message、父提交、文件差异和当前源码。L16 仅有本地 fast-forward 拉取证据，未推测其原始创建分支。
 - 方案与改动：扩展课程索引与课程详情，更新当前文件导航；把 Q09 标记为已由 L13 解决；登记 Q10 作为相对 URL 的后续排查入口；从 Markdown 主档重新生成带静态目录导航的 DOCX。未修改 TypeScript 课程源码或依赖。
-- Git：处理分支 `main`；修改前基线 `107d9b0`；本次文档变更待提交，未创建、修改或重写提交。工作区中的其他未提交学习代码均保持不变并排除在本次汇总之外；本次只修改两份文档。
+- Git：处理分支 `main`；修改前基线 `107d9b0`；实际提交为 `fdfdb79`，时间 2026-09-23 17:21:40 +08:00，完整 message 为 `refactor: organize project modules and update learning trace`。该提交同时包含 L18 模块化重构和两份学习文档。
 - 验证：2026-09-23 在系统临时目录导出已提交的 `107d9b0` 纯净快照，使用项目现有 TypeScript 工具链独立编译通过；运行快照入口并加载 `.env.example`，输出 `API Base URL: https://jsonplaceholder.typicode.com`。未执行真实网络请求；历史各课未保存的运行结果仍明确标为未知。
 - 文档核验：Markdown 与 DOCX 均覆盖 L01～L18；DOCX 目录条目、正文标题、课程提交信息和 Markdown 主档同步；ZIP 包结构、内部导航目标、Unicode 替换字符和关键课程文本已检查。当前环境未执行 Word/WPS 逐页视觉渲染。
-- 未决项与后续：Q08 折扣率边界仍待需求确认；Q10 的相对 URL 请求待后续统一。后续若提交本次文档，应补录真实提交 SHA、时间和完整 message，并再次同步两版文档。
+- 未决项与后续：Q08 折扣率边界仍待需求确认；Q10 的相对 URL 请求待后续统一。该批文档已随 `fdfdb79` 提交；后续校正见 REQ-20260924-01。
+<a id="req-20260924-01"></a>
+### REQ-20260924-01：校正 Lesson 13～18 与学习进度
+
+- 请求/记录时间：2026-09-24 09:49:16 +08:00。
+- 类型与状态：学习文档维护；完成，文档变更待提交。
+- 需求摘要与验收标准：严格按当前仓库、明确课程事实和可验证 Git 历史校正 L13～L18；加入长期 Maintenance Rules；同步 Current Progress 为 Lesson 18 completed、Lesson 19 planned；保持 Markdown 与 DOCX 语义一致，不实现 L19。
+- 关联课程/问题/前序需求：L13～L18、Q01、Q09～Q11、REQ-20260923-01。
+- 事实校正：L16 合并 `ab7563f` 的 DELETE/PUT/请求复用与 `d51289d` 的 `Validator<T>` / 运行时校验；L17 对应 `107d9b0` 的环境配置；L18 对应 `fdfdb79` 的模块化重构。JSONPlaceholder 当前不使用 `ApiResponse<T>`；Zod、Astro、Sanity 均未标为已完成或已开始。
+- 当前路径更新：Todo API、类型和验证器分别定位到 `src/api/todoApi.ts`、`src/types/todo.ts`、`src/validators/todoValidator.ts`；产品验证器和错误类定位到 `src/validators/`、`src/errors/`；barrel exports 定位到各目录 `index.ts`。
+- 冲突与边界：`fdfdb79` 重构前的 `ProductNotFoundError` 暴露 `readonly productId`，当前独立错误类未保留该公开字段，因此不能确认重构完全行为等价；记录为 Q11，本次不改源码。`isProduct` 当前仍只检查字段存在性，未完成类型与全部必填字段校验；保留 Q01。
+- 修改文件：仅 `docs/LEARNING-TRACE.md`、`docs/TypeScript-Learning-Trace.docx`；未修改课程源码、配置或依赖。
+- Git：处理分支 `main`；修改前基线 `fdfdb79`；本次文档校正待提交，未创建或改写提交。
+- 验证：`npm.cmd run build` 通过；Markdown 共核对 35 个锚点、34 个内部链接和 27 个文件链接，目标均有效；DOCX 共核对 37 项静态目录、37 个正文标题和 8 条需求索引，关键课程事实均已同步，Unicode 替换字符为 0；工作区仅这两份学习记录文档发生修改。未使用 Word/WPS 进行分页与视觉渲染核验。
+- 未决项与后续：Q01、Q08、Q10、Q11 保持待处理；Lesson 19 仅为 Planned。
+
+<a id="req-20260924-02"></a>
+### REQ-20260924-02：补齐工程提交表并建立实时同步规则
+
+- 请求/记录时间：2026-09-24 10:25:06 +08:00。
+- 类型与状态：学习文档维护；完成，文档变更待提交。
+- 用户需求摘要：补齐“工程变更与其他提交”中尚未登记的已提交记录，并将该区域随 Git 历史实时增量更新的要求纳入长期文档规则。
+- 证据与处理：以当前 `HEAD` `fdfdb79` 枚举全部可达提交，对照课程索引和 E01～E12 后确认遗漏 `f5c5539`（2026-09-12 18:11:49 +08:00，`docs: organize lessons 1 through 12 learning notes`）；新增为 E13。当前未提交的两份文档修改不计入工程提交表。
+- 规则更新：Maintenance Rules 与“后续记录模板与维护流程”均要求每次维护时重新核对当前 `HEAD` 的可达提交，将课程索引未覆盖的新增提交同步补入工程提交表；待提交工作只登记到 REQ。
+- 修改文件：仅 `docs/LEARNING-TRACE.md`、`docs/TypeScript-Learning-Trace.docx`；未修改课程源码、配置或依赖。
+- Git：处理分支 `main`；当前基线 `fdfdb79`；本次文档修改待提交，未创建或改写 Git 历史。
+- 验证：核对当前 31 条可达提交，课程索引与工程提交表合计覆盖全部提交且不重复；同步核对 Markdown 与 DOCX 的 E13、规则和本需求记录。未使用 Word/WPS 进行分页与视觉渲染核验。
 <a id="maintenance"></a>
 ## 后续记录模板与维护流程
 
 此档案依靠遵守根目录 AGENTS.md 的助手在处理项目需求时更新，不是后台监控服务。手工或其他工具产生的提交，需要下次任务开始时核对补录。无需为维护文档额外引入依赖。
 
-1. 开始任务时读取本档案，检索相关函数、课程、REQ 和 Q 编号，核对实际源码、分支、Git 状态；补齐能够从历史确认的遗漏记录。
+1. 开始任务时读取本档案，检索相关函数、课程、REQ 和 Q 编号，核对实际源码、分支、Git 状态；从当前 `HEAD` 枚举可达提交，补齐能够从历史确认的遗漏记录。课程索引未覆盖的新增提交必须实时增量写入“工程变更与其他提交”，未提交改动只写入 REQ，不得伪造提交记录。
 2. 新需求按当日顺序分配 `REQ-YYYYMMDD-NN`；同一问题的继续处理更新原记录并追加处理时间，后续独立修复创建新编号并关联旧记录。
 3. 完成、部分完成或受阻都要记录实际状态、修改文件/符号、验证结果和未决项；纯学习讲解记录“无代码变更”。没有执行的验证明确写“未运行”。
 4. 未提交时填写处理分支、基线 SHA、待提交状态；建议 message 与实际 message 分开。不为填哈希擅自提交。用户授权提交后，补录真实结果；不通过 amend 或重写历史给文档制造自引用哈希。若文档与代码同一提交，哈希可在下一次维护时补录。
