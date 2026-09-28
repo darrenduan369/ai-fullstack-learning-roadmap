@@ -7,3 +7,5 @@ export type {
 } from "./todo";
 
 export type { RequestState } from "./requestState";
+
+export type { ApiError } from "./apiError";

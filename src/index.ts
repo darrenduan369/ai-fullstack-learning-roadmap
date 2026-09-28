@@ -70,6 +70,11 @@ import { API_BASE_URL } from "./config/apiConfig";
 import type { RequestState } from "./types";
 import type { Todo } from "./types";
 import { runTodoStateDemo } from "./demos/requestStateDemo";
+import {
+  runHttpErrorDemo,
+  runResultDemo,
+  runValidationErrorDemo,
+} from "./demos/resultDemo";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -912,4 +917,10 @@ todoState = {
 //   console.log("Todo:", state.data.title);
 // }
 
-runTodoStateDemo();
+// runTodoStateDemo();
+
+// runResultDemo();
+
+runHttpErrorDemo();
+
+runValidationErrorDemo();

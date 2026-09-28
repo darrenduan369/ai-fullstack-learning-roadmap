@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "../config/apiConfig";
+import { HttpError, ResponseValidationError } from "../errors";
 import { ApiResponse } from "../types/api";
 
 // export async function request<T>(
@@ -45,14 +46,14 @@ export async function request<T>(
   const response = await fetch(`${API_BASE_URL}${path}`, options);
 
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
+    throw new HttpError(response.status);
   }
 
   const data: unknown = await response.json();
 
   if (!validator(data)) {
-    throw new Error("Invalid response data");
+    throw new ResponseValidationError();
   }
 
-  return data;
+  return data as T;
 }
