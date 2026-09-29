@@ -1,6 +1,5 @@
 import { products } from "../data/products";
 import type {
-  Product,
   StockStatus,
   SortDirection,
   Supplier,
@@ -11,6 +10,10 @@ import type {
 } from "../types/product";
 
 import { ProductNotFoundError, ProductValidationError } from "../errors";
+import { fetchProductById } from "../api";
+import type { Product, Result, ApiError } from "../types";
+
+import { toApiError } from "../utils/toApiError";
 
 export function getFeaturedProducts(products: readonly Product[]): Product[] {
   // 返回所有精选产品
@@ -310,33 +313,33 @@ export function searchProduct(
   });
 }
 
-export function getRequiredProductById(
-  products: readonly Product[],
-  id: number,
-): Product {
-  const product = products.find((product) => product.id === id);
+// export function getRequiredProductById(
+//   products: readonly Product[],
+//   id: number,
+// ): Product {
+//   const product = products.find((product) => product.id === id);
 
-  if (!product) {
-    throw new ProductNotFoundError(id);
-  }
+//   if (!product) {
+//     throw new ProductNotFoundError(id);
+//   }
 
-  return product;
-}
+//   return product;
+// }
 
-export function fetchProductById(id: number): Promise<Product> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const product = products.find((product) => product.id === id);
+// export function fetchProductById(id: number): Promise<Product> {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       const product = products.find((product) => product.id === id);
 
-      if (!product) {
-        reject(new Error(`Product ${id} not found`));
-        return;
-      }
+//       if (!product) {
+//         reject(new Error(`Product ${id} not found`));
+//         return;
+//       }
 
-      resolve(product);
-    }, 1000);
-  });
-}
+//       resolve(product);
+//     }, 1000);
+//   });
+// }
 
 export function fetchProductMessage(shouldFail: boolean): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -349,4 +352,33 @@ export function fetchProductMessage(shouldFail: boolean): Promise<string> {
       resolve("Product loaded successfully");
     }, 1000);
   });
+}
+
+// Retrieves a product by ID, throwing a ProductNotFoundError if the product is not found.
+export async function getRequiredProductById(id: number): Promise<Product> {
+  const product = await fetchProductById(id);
+
+  if (!product) {
+    throw new ProductNotFoundError(id);
+  }
+
+  return product;
+}
+
+export async function getProductResultById(
+  id: number,
+): Promise<Result<Product, ApiError>> {
+  try {
+    const product = await getRequiredProductById(id);
+
+    return {
+      ok: true,
+      data: product,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error: toApiError(error),
+    };
+  }
 }

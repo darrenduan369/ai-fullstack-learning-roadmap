@@ -35,7 +35,6 @@ import {
   findProduct,
   searchProduct,
   getRequiredProductById,
-  fetchProductById,
   fetchProductMessage,
 } from "./services/productService";
 
@@ -75,6 +74,12 @@ import {
   runResultDemo,
   runValidationErrorDemo,
 } from "./demos/resultDemo";
+import {
+  runProductApiDemo,
+  runProductListStateDemo,
+  runProductResultDemo,
+  runProductStateDemo,
+} from "./demos/productApiDemo";
 
 // console.log("B2B Product Catalog");
 // console.log(`Loaded products: ${products.length}`);
@@ -898,10 +903,10 @@ let todoState: RequestState<Todo> = {
 //   },
 // };
 
-todoState = {
-  status: "error",
-  message: "Failed to load todo",
-};
+// todoState = {
+//   status: "error",
+//   message: "Failed to load todo",
+// };
 
 // function printTodoState(state: RequestState<Todo>): void {
 //   if (state.status === "loading") {
@@ -921,6 +926,14 @@ todoState = {
 
 // runResultDemo();
 
-runHttpErrorDemo();
+// runHttpErrorDemo();
 
-runValidationErrorDemo();
+// runValidationErrorDemo();
+
+// runProductApiDemo();
+
+// runProductResultDemo();
+
+// runProductStateDemo();s
+
+runProductListStateDemo();

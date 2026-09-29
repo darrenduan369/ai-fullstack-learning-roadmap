@@ -1,8 +1,18 @@
 import type { ApiError } from "../types";
 
-import { HttpError, ResponseValidationError } from "../errors";
+import {
+  HttpError,
+  ProductNotFoundError,
+  ResponseValidationError,
+} from "../errors";
 
 export function toApiError(error: unknown): ApiError {
+  if (error instanceof ProductNotFoundError) {
+    return {
+      code: "NOT_FOUND",
+      message: error.message,
+    };
+  }
   if (error instanceof HttpError) {
     return {
       code: "HTTP_ERROR",

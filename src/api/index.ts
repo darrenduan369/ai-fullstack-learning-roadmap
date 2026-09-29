@@ -7,3 +7,5 @@ export {
   replaceTodo,
   deleteTodo,
 } from "./todoApi";
+
+export { fetchProducts, fetchProductById } from "./productApi";

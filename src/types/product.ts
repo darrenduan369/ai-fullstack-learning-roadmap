@@ -51,3 +51,9 @@ export interface ProductSearchOptions {
   category?: string;
   featuredOnly?: boolean;
 }
+
+export interface ProductQuery {
+  category?: string;
+  featured?: boolean;
+  minPrice?: number;
+}
