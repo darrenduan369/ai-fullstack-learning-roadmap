@@ -5,7 +5,7 @@ import type { RequestState, Todo } from "../types";
 import type { Result } from "../types/result";
 
 import type { ApiError } from "../types/apiError";
-import { HttpError, ResponseValidationError } from "../errors";
+import { ResponseValidationError } from "../errors";
 import { request } from "../api/httpClient";
 import { isTodo, isTodoArray } from "../validators";
 import { toApiError } from "../utils/toApiError";
@@ -33,15 +33,6 @@ export async function runResultDemo(): Promise<void> {
     console.log("Todo:", result.data.title);
   } else {
     console.log(`${result.error.code}: ${result.error.message}`);
-  }
-}
-
-// Test function to demonstrate error handling
-async function testHttpError(): Promise<void> {
-  try {
-    await request<Todo>("/invalid-page", isTodo);
-  } catch (error) {
-    console.log(error);
   }
 }
 
@@ -116,7 +107,3 @@ function resultToRequestState<T>(result: Result<T, ApiError>): RequestState<T> {
     message: result.error.message,
   };
 }
-
-// const result = await safeFetchTodo();
-
-// const state = resultToRequestState(result);

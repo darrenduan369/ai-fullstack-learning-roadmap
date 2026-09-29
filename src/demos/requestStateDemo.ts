@@ -29,8 +29,6 @@ function printTodoState(state: RequestState<Todo>): void {
   }
 }
 
-// printTodoState(todoState);
-
 async function loadTodoState(): Promise<RequestState<Todo>> {
   try {
     const todo = await fetchTodo();

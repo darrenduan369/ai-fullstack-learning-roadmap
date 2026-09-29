@@ -1,4 +1,3 @@
-import { products } from "../data/products";
 import type {
   StockStatus,
   SortDirection,
@@ -9,7 +8,7 @@ import type {
   ProductSearchOptions,
 } from "../types/product";
 
-import { ProductNotFoundError, ProductValidationError } from "../errors";
+import { ProductNotFoundError } from "../errors";
 import { fetchProductById } from "../api";
 import type { Product, Result, ApiError } from "../types";
 
@@ -312,34 +311,6 @@ export function searchProduct(
     return true;
   });
 }
-
-// export function getRequiredProductById(
-//   products: readonly Product[],
-//   id: number,
-// ): Product {
-//   const product = products.find((product) => product.id === id);
-
-//   if (!product) {
-//     throw new ProductNotFoundError(id);
-//   }
-
-//   return product;
-// }
-
-// export function fetchProductById(id: number): Promise<Product> {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       const product = products.find((product) => product.id === id);
-
-//       if (!product) {
-//         reject(new Error(`Product ${id} not found`));
-//         return;
-//       }
-
-//       resolve(product);
-//     }, 1000);
-//   });
-// }
 
 export function fetchProductMessage(shouldFail: boolean): Promise<string> {
   return new Promise((resolve, reject) => {

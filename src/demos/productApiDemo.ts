@@ -124,7 +124,6 @@ export async function runProductListStateDemo(): Promise<void> {
     depth: null,
   });
 
-  console.log("Test empty products state:-----------------------");
   state = {
     status: "loading",
   };

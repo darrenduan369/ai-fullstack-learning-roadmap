@@ -17,7 +17,7 @@
 <a id="scope"></a>
 ## 记录口径与分支证据
 
-本档案根据本地 `git log --all`、提交差异、`git reflog --all` 和现有源码整理，覆盖当前可见的 31 条历史提交。此前完整聊天、正式上课起止时间和需求模板未保存在仓库中；课程标题和目标根据代码及提交还原。未提交内容明确标为“待提交”，已删除且 Git 不可见的内容不在覆盖范围内。
+本档案根据本地 `git log --all`、提交差异、`git reflog --all` 和现有源码整理，覆盖当前可见的 35 条历史提交。此前完整聊天、正式上课起止时间和需求模板未保存在仓库中；课程标题和目标根据代码及提交还原。未提交内容明确标为“待提交”，已删除且 Git 不可见的内容不在覆盖范围内。
 
 表内时间为 Git 作者时间，时区均为 `+08:00`；本次核对的课程提交中，作者时间与提交者时间相同。提交时间不代表上课开始或结束时间。历史验证结果没有可靠记录，不能由“已经提交”推断“测试通过”。
 
@@ -43,10 +43,11 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 - 每次维护学习记录时，都要从当前 `HEAD` 枚举可达 Git 提交，并将课程索引未覆盖的新增提交实时增量补入“工程变更与其他提交”；不得只更新课程表。尚未提交的工作区改动不计入提交表，应在对应 REQ 中标为待提交。
 - 不得在文档中暴露 API key、密码、token、凭据、真实 `.env` 值或其他秘密。可以记录 `.env.example` 及占位符，但不得复制本地 `.env` 内容。
 - 源码结构可以演进，但课程历史必须保持时间顺序与事实稳定。
+- Git history 保存历史版本；当前源码应保留当前有效实现，而不是长期堆放已归档的大段注释代码。清理前必须先完成学习留档并核对定义、导入、导出与调用；无法确认的内容保留并登记风险。
 <a id="lessons"></a>
 ## 课程时间索引
 
-以下每行对应一个学习单元；message 保留 Git 原始文本。L01～L15、L17～L18 的分支证据为 M（`main`）；L16 的 `ab7563f` 只在当前克隆的 `main` fast-forward 记录中可见，原始创建分支记为 U，`d51289d` 为 M。
+以下每行对应一个学习单元；message 保留 Git 原始文本。L01～L15、L17～L21 的分支证据为 M（`main`）；L16 的 `ab7563f` 只在当前克隆的 `main` fast-forward 记录中可见，原始创建分支记为 U，`d51289d` 为 M。
 
 | 编号 / 课程 | 提交时间（+08:00） | 提交 | 原始 message |
 | --- | --- | --- | --- |
@@ -68,11 +69,14 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 | [L16 DELETE、PUT、可复用 HTTP 客户端与运行时校验](#l16) | 2026-09-21 21:10:01；2026-09-22 16:43:56 | `ab7563f`；`d51289d` | feat: add DELETE, PUT, and reusable HTTP request helper；feat: add typed HTTP client with runtime response validation |
 | [L17 API 基础地址、环境变量与配置](#l17) | 2026-09-23 14:42:04 | `107d9b0` | feat: add environment-based API configuration |
 | [L18 模块组织与 API 层重构](#l18) | 2026-09-23 17:21:40 | `fdfdb79` | refactor: organize project modules and update learning trace |
+| [L19 Discriminated Union 与异步/UI 状态建模](#l19) | 2026-09-24 16:25:39 | `c8ff2da` | feat: L19 add discriminated union request state modeling |
+| [L20 Result 与结构化错误建模](#l20) | 2026-09-28 18:00:31 | `4550119` | feat: L20 add typed result and structured error modeling |
+| [L21 Product API 集成与端到端状态流](#l21) | 2026-09-29 15:37:44 | `8193195` | feat: L21 integrate product API, result, and request state flows |
 
 <a id="details"></a>
 ## 每课内容与排查入口
 
-本节“复习检查”是建议的复验方法，不表示当时或本次已运行。日期、分支、提交 message 见上表。路径均指向当前文件；历史版本应使用提交哈希查看。所有课程的入口演示位于 `src/index.ts`，L01 原代码已被后续课程替换，其余大量演示目前被注释。本次课程汇总仅依据已提交到 `107d9b0` 的历史内容。
+本节“复习检查”是建议的复验方法，不表示当时或本次已运行。日期、分支、提交 message 见上表。路径均指向当前文件；历史版本应使用提交哈希查看。L01～L20 的历史入口演示曾位于 `src/index.ts`，现已由 Git 与本档案留存；当前入口只调用 L21 demo，当前课程演示模块位于 `src/demos/`。L13～L21 的课程汇总依据对应已提交历史与当前代码交叉核对；已删除练习不描述为当前能力。
 
 <a id="l01"></a>
 ### L01：基础类型与编译
@@ -278,19 +282,60 @@ request<Todo>("/todos/1", isTodo);
 - **提交与验证：**`fdfdb79`，2026-09-23 17:21:40 +08:00，`main`；message：`refactor: organize project modules and update learning trace`。当前整体验证见 REQ-20260924-01。
 - **Status：Completed。**
 
+<a id="l19"></a>
+### L19：Discriminated Union 与异步/UI 状态建模
+
+- **Learning Goals：**使用可辨识联合类型描述 UI / 异步生命周期，并通过状态字段安全缩小类型。
+- **Key Concepts：**Discriminated Union、type narrowing、`RequestState<T>`、idle、loading、success、empty、error、`switch` narrowing、`never`、`assertNever()`、exhaustiveness checking。
+- **Practice / Implementation：**`RequestState<T>` 以 `status` 为判别字段；success 携带 `data: T`，error 携带 `message: string`，idle/loading/empty 无需数据。`requestStateDemo.ts` 用 `switch` 处理 Todo 状态，default 分支调用 `assertNever(state)`。
+- **Lifecycle：**典型状态流是 `idle → loading → success / empty / error`。不同 status 对应不同数据形状，缩小后才能访问该分支专属字段。
+- **Important Distinction：**`RequestState<T>` 表达 UI / 异步生命周期状态，不等同于一次操作的成功或失败结果。
+- **Main Takeaway：**把状态和值绑定在联合类型分支中，可减少非法状态组合；`assertNever(value: never)` 能在新增联合成员但遗漏分支时提供穷尽性检查。
+- **Related Project Files：**`src/types/requestState.ts`、`src/utils/assertNever.ts`、`src/demos/requestStateDemo.ts`、`src/types/index.ts`。
+- **提交与验证：**`c8ff2da`，2026-09-24 16:25:39 +08:00，`main`；message：`feat: L19 add discriminated union request state modeling`。历史提交未保存独立验证结果。
+- **Status：Completed。**
+
+<a id="l20"></a>
+### L20：Result 与结构化错误建模
+
+- **Learning Goals：**复用可辨识联合类型显式表达操作结果，并把不同底层异常映射为统一、可判断的 API 错误。
+- **Key Concepts：**`Result<T, E>`、`ApiError`、`ApiErrorCode`、structured error modeling、`HttpError`、`ResponseValidationError`、`ProductNotFoundError`、`toApiError()`、throw/catch 与显式结果。
+- **Practice / Implementation：**成功分支为 `{ ok: true, data: T }`，失败分支为 `{ ok: false, error: E }`；`T` 表示成功数据，`E` 表示失败类型。当前错误码包括 `NETWORK_ERROR`、`HTTP_ERROR`、`VALIDATION_ERROR`、`NOT_FOUND`、`UNKNOWN_ERROR`。
+- **Error Flow：**底层 `HttpError` / `ResponseValidationError` / `ProductNotFoundError` / `TypeError` 经 `toApiError()` 统一为 `ApiError`，再作为 `Result<T, ApiError>` 的失败分支。`NOT_FOUND` 映射由 L21 补入。
+- **Important Distinction：**`Result<T, E>` 是 operation outcome；`RequestState<T>` 是 UI lifecycle state。两者可分层组合：先得到 Result，再映射为 RequestState。
+- **Current Implementation：**`httpClient.ts` 对非 2xx 抛出 `HttpError`，对运行时响应校验失败抛出 `ResponseValidationError`；`resultDemo.ts` 展示 Todo 成功、HTTP 失败、验证失败及 Result → RequestState 概念。
+- **Main Takeaway：**结构化错误让调用者基于稳定错误码分支，而不是解析错误消息；Result 让预期失败成为类型的一部分，但不要求所有异常都禁止 throw。
+- **Related Project Files：**`src/types/result.ts`、`src/types/apiError.ts`、`src/errors/HttpError.ts`、`src/errors/ResponseValidationError.ts`、`src/errors/ProductNotFoundError.ts`、`src/utils/toApiError.ts`、`src/demos/resultDemo.ts`、`src/api/httpClient.ts`。
+- **提交与验证：**`4550119`，2026-09-28 18:00:31 +08:00，`main`；message：`feat: L20 add typed result and structured error modeling`。历史提交未保存独立验证结果。
+- **Status：Completed。**
+
+<a id="l21"></a>
+### L21：Product API 集成与端到端状态流
+
+- **Learning Goals：**把产品类型、查询、mock 数据源、API、Service、领域错误、Result、RequestState 和 demo 串成一个完整产品模块流程；本课是综合集成与重构，而非新的语法专题。
+- **Integrated Flow：**单项流程为 `data source → productApi.ts → productService.ts → Result<Product, ApiError> → RequestState<Product> → demo / future UI`；列表流程为 `ProductQuery → productApi.ts → Product[] → RequestState<Product[]>`。
+- **ProductQuery：**`category?: string`、`featured?: boolean`、`minPrice?: number` 表达可选列表过滤。数字可选项先保存并缩小：`const minPrice = query?.minPrice; if (minPrice !== undefined) { ... }`，避免回调中仍被视为可能 undefined。
+- **API Layer：**`fetchProducts(query?)` 从 `src/data/products.ts` 复制并过滤 mock 数据，返回 `Promise<Product[]>`；`fetchProductById(id)` 返回 `Promise<Product | undefined>`。API 层回答“如何取得数据”，不独占全部业务语义。
+- **Service Layer：**API 查询不到 ID 可以返回 undefined；`getRequiredProductById(id)` 将“必须存在”解释为业务要求，缺失时抛出 `ProductNotFoundError`。`getProductResultById(id)` 捕获错误，经 `toApiError()` 返回 `Result<Product, ApiError>`，其中产品不存在映射为 `NOT_FOUND`。
+- **Single Product State：**Result 成功映射为 success；`NOT_FOUND` 映射为 empty；其他错误映射为 error。`NOT_FOUND → empty` 是本课 UI/产品决策，不是 TypeScript 规则；其他项目可选择 error、not-found 或独立 404 状态。
+- **Product List State：**查询成功且数组非空映射为 success；成功返回 `[]` 映射为 empty；异常映射为 error。单项 empty 可源于 NOT_FOUND，列表 empty 可源于成功查询无结果，UI 状态相同但业务原因不同。
+- **Temporary Debugging：**课程中曾用 `console.dir(state, { depth: null })`、`JSON.stringify(state, null, 2)`、`Object.keys()`、直接属性访问和 `Object.getOwnPropertyDescriptor()` 检查 id 与嵌套 supplier；这些仅是临时诊断技巧，不是生产功能。当前 demo 保留 `console.dir` 以展示嵌套状态，其余一次性诊断不应保留。
+- **Main Takeaway：**types、validators、errors、api、services、Result、RequestState 与 UI/demo 能在清晰模块边界下组合成连贯的数据与状态流。
+- **Related Project Files：**`src/types/product.ts`、`src/data/products.ts`、`src/api/productApi.ts`、`src/services/productService.ts`、`src/validators/productValidator.ts`、`src/errors/`、`src/types/result.ts`、`src/types/requestState.ts`、`src/utils/toApiError.ts`、`src/demos/productApiDemo.ts`、`src/index.ts`。
+- **提交与验证：**`8193195`，2026-09-29 15:37:44 +08:00，`main`；message：`feat: L21 integrate product API, result, and request state flows`。提交后的本次 build/start 结果见 REQ-20260929-01。
+- **Status：Completed。**
 <a id="progress"></a>
 ## Current Progress
 
-- **Current Lesson：**Lesson 18 completed。
-- **Current Stage：**TypeScript fundamentals → OOP → async programming → HTTP/API integration → runtime validation → environment configuration → project modularization。
-- **Next Lesson：**Lesson 19 — Discriminated Unions and UI / Async State Modeling。
-- **Planned Focus：**loading、success、error、discriminated union、state modeling。
-- **Next Lesson Status：Planned。**Lesson 19 尚未完成，本次未实现其代码，也未将未来主题写入 L18。
+- **Current Lesson：**Lesson 21 completed。
+- **Current Stage：**TypeScript fundamentals → OOP → async programming → HTTP/API integration → runtime validation → environment configuration → project modularization → UI state modeling → structured result/error modeling → Product end-to-end integration。
+- **Next Lesson：**Lesson 22 — TypeScript Final Consolidation / Project Cleanup / Readiness for Astro。
+- **Next Lesson Status：Planned / Next。**Lesson 22 尚未完成；本次历史残留清理属于 L21 后的项目维护，不将 Lesson 22 写为已完成。
 
 <a id="history"></a>
 ## 工程变更与其他提交
 
-本表补齐课程表之外的 13 条提交。历史修复只按差异描述，不猜测对话中的原因或验收结果。每次文档维护均应以当前 `HEAD` 重新核对 Git 历史并增量更新本表。
+本表补齐课程表之外的 14 条提交。历史修复只按差异描述，不猜测对话中的原因或验收结果。每次文档维护均应以当前 `HEAD` 重新核对 Git 历史并增量更新本表。
 
 | 编号 | 时间（+08:00） | 提交 / 分支证据 | 原始 message | 内容与定位 |
 | --- | --- | --- | --- | --- |
@@ -307,6 +352,7 @@ request<Todo>("/todos/1", isTodo);
 | E11 | 2026-09-05 14:50:12 | `21d04ae` / U | Update name format in README.md | README 姓名格式调整 |
 | E12 | 2026-09-05 19:18:45 | `9dbbfe0` / M | Merge branch 'main' of github.com:darrenduan369/ai-fullstack-learning-roadmap | 合并 main 历史；与当日重载课程区分 |
 | E13 | 2026-09-12 18:11:49 | `f5c5539` / M | docs: organize lessons 1 through 12 learning notes | 整理 L01～L12 学习记录；属于课程文档维护提交，不重复计为课程 |
+| E14 | 2026-09-24 11:25:39 | `2f39e18` / M | docs: update lessons 13-18 and synchronize learning trace | 同步 L13～L18、维护规则与两版学习档案；不重复计为课程 |
 
 <a id="lookup"></a>
 ## 文件与问题检索
@@ -315,24 +361,27 @@ request<Todo>("/todos/1", isTodo);
 
 | 文件 | 当前职责 | 关联课程 |
 | --- | --- | --- |
-| [src/index.ts](../src/index.ts) | 演示入口与模块消费者 | 全部、L18 |
-| [src/types/product.ts](../src/types/product.ts) | 产品模型、联合类型、工具类型和查询选项 | L02～L10 |
+| [src/index.ts](../src/index.ts) | 当前 L21 demo 入口；旧入口演示由 Git 保存 | L21 |
+| [src/types/product.ts](../src/types/product.ts) | 产品模型、工具类型及 `ProductQuery` | L02～L10、L21 |
 | [src/data/products.ts](../src/data/products.ts) | 产品样例数据 | L02～L04 |
-| [src/services/productService.ts](../src/services/productService.ts) | 产品业务与异步逻辑 | L02～L14、L18 |
+| [src/services/productService.ts](../src/services/productService.ts) | 产品业务逻辑、必需查询及 Result 封装 | L02～L14、L18、L21 |
 | [src/utils/objectUtils.ts](../src/utils/objectUtils.ts) | 泛型字段读写与求和 | L06、L09 |
 | [src/types/contracts.ts](../src/types/contracts.ts) | 可销售、库存管理与定价策略接口 | L12～L13 |
 | [src/models/ProductEntity.ts](../src/models/ProductEntity.ts) / [src/models/BaseProduct.ts](../src/models/BaseProduct.ts) | 实体、继承、方法重写、多态和定价策略 | L12～L13 |
 | [src/async/asyncDemo.ts](../src/async/asyncDemo.ts) | Promise 与延迟异步任务 | L14 |
-| [src/api/productApi.ts](../src/api/productApi.ts) | 返回 `unknown` 的 JSON 请求示例 | L15 |
+| [src/api/productApi.ts](../src/api/productApi.ts) | JSON 请求示例及 mock Product 数据访问 | L15、L21 |
 | [src/api/todoApi.ts](../src/api/todoApi.ts) | Todo HTTP 请求 | L15～L18 |
 | [src/api/httpClient.ts](../src/api/httpClient.ts) | `request<T>`、`Validator<T>`、基础地址和响应校验 | L16～L17 |
-| [src/api/index.ts](../src/api/index.ts) | Todo API 显式 barrel exports | L18 |
-| [src/types/todo.ts](../src/types/todo.ts) / [src/types/index.ts](../src/types/index.ts) | Todo 类型及显式 barrel exports | L15、L18 |
+| [src/api/index.ts](../src/api/index.ts) | Todo 与 Product API 显式 barrel exports | L18、L21 |
+| [src/types/todo.ts](../src/types/todo.ts) / [src/types/index.ts](../src/types/index.ts) | Todo、Product、RequestState、Result、ApiError 类型导出 | L15、L18～L21 |
+| [src/types/requestState.ts](../src/types/requestState.ts) / [src/utils/assertNever.ts](../src/utils/assertNever.ts) | UI/异步状态联合与穷尽性检查 | L19 |
+| [src/types/result.ts](../src/types/result.ts) / [src/types/apiError.ts](../src/types/apiError.ts) / [src/utils/toApiError.ts](../src/utils/toApiError.ts) | 操作结果、结构化错误与错误映射 | L20～L21 |
+| [src/demos/requestStateDemo.ts](../src/demos/requestStateDemo.ts) / [src/demos/resultDemo.ts](../src/demos/resultDemo.ts) / [src/demos/productApiDemo.ts](../src/demos/productApiDemo.ts) | L19～L21 当前课程 demo | L19～L21 |
 | [src/types/api.ts](../src/types/api.ts) | 尚未用于当前 Todo 流程的 `ApiResponse<T>` | L16 |
 | [src/validators/todoValidator.ts](../src/validators/todoValidator.ts) | Todo 运行时校验 | L15～L16、L18 |
 | [src/validators/productValidator.ts](../src/validators/productValidator.ts) | 产品守卫与断言；当前校验仍不完整 | L10～L11、L18 |
 | [src/validators/index.ts](../src/validators/index.ts) | 验证器显式 barrel exports | L18 |
-| [src/errors/ProductNotFoundError.ts](../src/errors/ProductNotFoundError.ts) / [src/errors/ProductValidationError.ts](../src/errors/ProductValidationError.ts) / [src/errors/index.ts](../src/errors/index.ts) | 产品错误类及显式 barrel exports | L11、L18 |
+| [src/errors/ProductNotFoundError.ts](../src/errors/ProductNotFoundError.ts) / [src/errors/ProductValidationError.ts](../src/errors/ProductValidationError.ts) / [src/errors/HttpError.ts](../src/errors/HttpError.ts) / [src/errors/ResponseValidationError.ts](../src/errors/ResponseValidationError.ts) / [src/errors/index.ts](../src/errors/index.ts) | 领域、HTTP、响应校验错误及显式导出 | L11、L18、L20～L21 |
 | [src/config/apiConfig.ts](../src/config/apiConfig.ts) | 读取并 Fail Fast 校验 `API_BASE_URL` | L17 |
 | [.env.example](../.env.example) / [.gitignore](../.gitignore) | 环境变量模板与本地 `.env` 忽略规则 | L17 |
 | [package.json](../package.json) / [tsconfig.json](../tsconfig.json) | build/start、Node 类型与编译配置 | L01、L17 |
@@ -347,7 +396,7 @@ request<Todo>("/todos/1", isTodo);
 | Q03 supplier.country 丢失 | updateProduct / updateSupplier / updateProductWithoutSupplier | L06 → L07 | 核对调用的是深一层合并还是浅替换；属于排查入口，未确认实际回归 |
 | Q04 不存在的 ID 取属性失败 | getProductById / searchProduct / createProductMap | L03、L08、L10 | 用 999 检查 undefined 分支；调用处需判断 |
 | Q05 排序或修改污染原对象 | sortProductsByPrice / updateProductStockById / updateSupplierNameById | L04、L05 | 对比数组、目标对象及嵌套 supplier 引用 |
-| Q06 旧练习没有输出 | src/index.ts 中对应注释块 | 各课入口 | 先确认是否注释及是否重新编译；不要同时启用同名 const 示例 |
+| Q06 旧练习没有输出 | 历史 `src/index.ts` 注释块；当前 `src/demos/` | 各课入口、REQ-20260929-01 | 已解决：旧注释入口已清理；需要复习时查看 Git 历史或显式调用对应 demo，不把归档代码恢复为长期注释 |
 | Q07 负库存显示低库存 | getStockStatus | L03 / `163226a` | 用 -1、0、5、6 检查；待明确是否拒绝负数 |
 | Q08 折扣率可能超出合理范围 | DiscountProduct.constructor / getPrice | L12 / 暂存区 | 用 -0.1、1、1.2 检查；待明确是否限制在 0～1，本次不改代码 |
 | Q09 接口文件名疑似拼写错误 | 历史 `src/types/constracts.ts` 及其 imports | L12 → L13 / `1779069` | 已解决：更名为 `src/types/contracts.ts` 并同步 imports；当前路径已核对 |
@@ -401,6 +450,7 @@ node dist/index.js
 | [REQ-20260923-01](#req-20260923-01) | 2026-09-23 | 根据提交与当前代码补录第 13～18 课并同步 Markdown/DOCX | 已随 `fdfdb79` 提交 | L13～L18、Q09～Q10 |
 | [REQ-20260924-01](#req-20260924-01) | 2026-09-24 | 按课程事实校正 L13～L18、进度和长期维护规则 | Markdown/DOCX 已同步，待提交 | L13～L18、Q01、Q10～Q11 |
 | [REQ-20260924-02](#req-20260924-02) | 2026-09-24 | 补齐工程提交表并建立实时增量同步规则 | Markdown/DOCX 已同步，待提交 | E01～E13、REQ-20260924-01 |
+| [REQ-20260929-01](#req-20260929-01) | 2026-09-29 | 同步 L19～L21 后安全清理历史练习残留 | 完成，变更待提交 | L19～L21、E14 |
 
 <a id="req-20260908-01"></a>
 ### REQ-20260908-01：建立可持续维护的追溯档案
@@ -493,6 +543,21 @@ node dist/index.js
 - 修改文件：仅 `docs/LEARNING-TRACE.md`、`docs/TypeScript-Learning-Trace.docx`；未修改课程源码、配置或依赖。
 - Git：处理分支 `main`；当前基线 `fdfdb79`；本次文档修改待提交，未创建或改写 Git 历史。
 - 验证：核对当前 31 条可达提交，课程索引与工程提交表合计覆盖全部提交且不重复；同步核对 Markdown 与 DOCX 的 E13、规则和本需求记录。未使用 Word/WPS 进行分页与视觉渲染核验。
+<a id="req-20260929-01"></a>
+### REQ-20260929-01：同步 Lesson 19～21 并安全清理历史练习残留
+
+- 请求/记录时间：2026-09-29 15:44:34 +08:00。
+- 类型与状态：学习文档维护与安全清理；完成，变更待提交。
+- 需求摘要与验收标准：先将两版学习记录同步到 Lesson 21，再审计并删除已由正式模块替代、无引用且已留档的注释残留；保留当前实现、当前 demo 和可复用代码；最终执行 build、start、依赖与 Git diff 检查，不 commit、不 push。
+- 关联课程/问题/前序需求：L13～L21、E14、REQ-20260924-01、REQ-20260924-02。
+- 事实与基线：处理分支 `main`；修改前基线 `8193195`。L19、L20、L21 分别对应 `c8ff2da`、`4550119`、`8193195`；课程事实已与当前类型、错误、API、Service 和 demo 交叉核对。
+- 分阶段方案：阶段 1 核验 Git/代码/文档；阶段 2 更新 Markdown；阶段 3 同步 DOCX；阶段 4 全局引用审计并做最小安全清理；阶段 5 build/start 与 diff 核验。源码清理仅在两版文档完成留档后开始。
+- 文档结果：Markdown 与 DOCX 已同步 L19～L21；L19～L21 均为 Completed；Current Progress 为 Lesson 21 completed；Lesson 22 仅为 Planned / Next；E14 与当前 35 条可达提交已纳入记录。
+- 安全清理：`src/index.ts` 删除 L01～L20 已注释入口演示及其无效 imports，只保留当前 `runProductListStateDemo()`；`src/services/productService.ts` 删除已由 `productApi.ts` / 当前 Service 替代的注释版 `getRequiredProductById(products, id)` 与 Promise/setTimeout 版 `fetchProductById(id)`；`src/api/httpClient.ts` 删除两个已被 validator 版 `request<T>` 替代的注释实现及失效的 `ApiResponse` import；三个 demo 文件删除孤立注释调用、重复的 `testHttpError` 和一次性分隔输出。
+- 保留结论：保留 `fetchProductMessage` 与 `src/async/asyncDemo.ts` 作为仍有效的 L14 Promise 练习；保留 `resultToRequestState` 作为 L20 分层概念；保留全部正式 Product 服务函数、validators、errors、models、types、Todo API 与 L19～L21 demo。Q01、Q08、Q10、Q11 未借清理改动。
+- 验证：`npm.cmd run build` 通过，TypeScript 0 errors；`npm.cmd start` 通过，依次输出 loading、包含嵌套 supplier 的 success 列表状态和 empty 状态。全局复查未发现 unresolved import、重复的当前 `fetchProductById` / `getRequiredProductById` 定义或指定的一次性诊断代码。
+- Git：不创建提交，不 push，不 amend、不 reset、不改写历史；本次工作区变更待用户检查。
+- 未决项与后续：保留无当前入口调用但仍有课程或复用价值的有效导出；未执行 Word/WPS 逐页视觉渲染。Lesson 22 仅标记 Planned / Next。
 <a id="maintenance"></a>
 ## 后续记录模板与维护流程
 
