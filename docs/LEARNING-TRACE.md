@@ -17,7 +17,7 @@
 <a id="scope"></a>
 ## 记录口径与分支证据
 
-本档案根据本地 `git log --all`、提交差异、`git reflog --all` 和现有源码整理，覆盖当前可见的 35 条历史提交。此前完整聊天、正式上课起止时间和需求模板未保存在仓库中；课程标题和目标根据代码及提交还原。未提交内容明确标为“待提交”，已删除且 Git 不可见的内容不在覆盖范围内。
+本档案根据本地 `git log --all`、提交差异、`git reflog --all` 和现有源码整理，覆盖当前可见的 37 条历史提交。此前完整聊天、正式上课起止时间和需求模板未保存在仓库中；课程标题和目标根据代码及提交还原。未提交内容明确标为“待提交”，已删除且 Git 不可见的内容不在覆盖范围内。
 
 表内时间为 Git 作者时间，时区均为 `+08:00`；本次核对的课程提交中，作者时间与提交者时间相同。提交时间不代表上课开始或结束时间。历史验证结果没有可靠记录，不能由“已经提交”推断“测试通过”。
 
@@ -47,7 +47,7 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 <a id="lessons"></a>
 ## 课程时间索引
 
-以下每行对应一个学习单元；message 保留 Git 原始文本。L01～L15、L17～L21 的分支证据为 M（`main`）；L16 的 `ab7563f` 只在当前克隆的 `main` fast-forward 记录中可见，原始创建分支记为 U，`d51289d` 为 M。
+以下每行对应一个学习单元；message 保留 Git 原始文本。L01～L15、L17～L22 的分支证据为 M（`main`）；L16 的 `ab7563f` 只在当前克隆的 `main` fast-forward 记录中可见，原始创建分支记为 U，`d51289d` 为 M。
 
 | 编号 / 课程 | 提交时间（+08:00） | 提交 | 原始 message |
 | --- | --- | --- | --- |
@@ -72,11 +72,12 @@ Git 提交对象本身不保存创建分支。下表分支标记含义：
 | [L19 Discriminated Union 与异步/UI 状态建模](#l19) | 2026-09-24 16:25:39 | `c8ff2da` | feat: L19 add discriminated union request state modeling |
 | [L20 Result 与结构化错误建模](#l20) | 2026-09-28 18:00:31 | `4550119` | feat: L20 add typed result and structured error modeling |
 | [L21 Product API 集成与端到端状态流](#l21) | 2026-09-29 15:37:44 | `8193195` | feat: L21 integrate product API, result, and request state flows |
+| [L22 TypeScript 最终收尾、项目健康检查与 Astro 就绪准备](#l22) | 2026-09-29 16:59:36 | `f561f6e` | chore: L22 finalize TypeScript project readiness |
 
 <a id="details"></a>
 ## 每课内容与排查入口
 
-本节“复习检查”是建议的复验方法，不表示当时或本次已运行。日期、分支、提交 message 见上表。路径均指向当前文件；历史版本应使用提交哈希查看。L01～L20 的历史入口演示曾位于 `src/index.ts`，现已由 Git 与本档案留存；当前入口只调用 L21 demo，当前课程演示模块位于 `src/demos/`。L13～L21 的课程汇总依据对应已提交历史与当前代码交叉核对；已删除练习不描述为当前能力。
+本节“复习检查”是建议的复验方法，不表示当时或本次已运行。日期、分支、提交 message 见上表。路径均指向当前文件；历史版本应使用提交哈希查看。L01～L20 的历史入口演示曾位于 `src/index.ts`，现已由 Git 与本档案留存；当前入口只调用 L21 demo，当前课程演示模块位于 `src/demos/`。L13～L22 的课程汇总依据对应已提交历史与当前代码交叉核对；已删除练习不描述为当前能力。
 
 <a id="l01"></a>
 ### L01：基础类型与编译
@@ -324,18 +325,32 @@ request<Todo>("/todos/1", isTodo);
 - **Related Project Files：**`src/types/product.ts`、`src/data/products.ts`、`src/api/productApi.ts`、`src/services/productService.ts`、`src/validators/productValidator.ts`、`src/errors/`、`src/types/result.ts`、`src/types/requestState.ts`、`src/utils/toApiError.ts`、`src/demos/productApiDemo.ts`、`src/index.ts`。
 - **提交与验证：**`8193195`，2026-09-29 15:37:44 +08:00，`main`；message：`feat: L21 integrate product API, result, and request state flows`。提交后的本次 build/start 结果见 REQ-20260929-01。
 - **Status：Completed。**
+<a id="l22"></a>
+### L22：TypeScript 最终收尾、项目健康检查与 Astro 就绪准备
+
+- **Learning Goals：**确认已经能够使用 TypeScript 组织一个小型真实项目，并把当前学习仓库整理到可以进入 Astro 阶段的状态；本课是 TypeScript 独立学习阶段的最终收尾，不再引入新的高级 TypeScript 语法。
+- **Core Topics：**TypeScript final consolidation、project health check、`tsc --noEmit`、build verification、runtime verification、module boundary review、repository readiness、Astro readiness。
+- **Project Readiness：**当前项目已形成 types、data、api、services、validators、errors、utils、models、demos、config 等职责边界；历史练习由 Git 与 Learning Trace 保存，当前入口保留有效 L21 demo。
+- **Practice / Implementation：**`package.json` 新增 `typecheck` script：`tsc --noEmit`，用于只做类型检查而不生成 `dist`；继续保留 `build: tsc` 和 `start: node --env-file=.env dist/index.js`，分别验证编译产物与当前运行入口。
+- **Health Check：**本次实际执行 `npm.cmd run typecheck`、`npm.cmd run build`、`npm.cmd start`，三者均通过；start 输出 Product list 的 loading、success（含嵌套 supplier）和 empty 状态。
+- **Important Boundary：**Astro 尚未安装或实现；“Astro 就绪”表示当前 TypeScript 项目结构、类型检查和运行状态已具备进入下一阶段的基础，不表示 Astro 学习已经完成或项目已经迁移。
+- **Main Takeaway：**能够组织、类型检查、构建、运行并维护一个分层 TypeScript 小项目后，TypeScript 独立学习阶段正式结束；下一阶段进入 Astro。
+- **Related Project Files：**`package.json`、`tsconfig.json`、`src/index.ts`、`src/api/`、`src/services/`、`src/types/`、`src/demos/`、`docs/LEARNING-TRACE.md`、`docs/TypeScript-Learning-Trace.docx`。
+- **提交与验证：**`f561f6e`，2026-09-29 16:59:36 +08:00，`main`；message：`chore: L22 finalize TypeScript project readiness`。提交仅新增 `typecheck` script；本次同步维护的验证结果见 REQ-20260929-02。
+- **Status：Completed。**
 <a id="progress"></a>
 ## Current Progress
 
-- **Current Lesson：**Lesson 21 completed。
-- **Current Stage：**TypeScript fundamentals → OOP → async programming → HTTP/API integration → runtime validation → environment configuration → project modularization → UI state modeling → structured result/error modeling → Product end-to-end integration。
-- **Next Lesson：**Lesson 22 — TypeScript Final Consolidation / Project Cleanup / Readiness for Astro。
-- **Next Lesson Status：Planned / Next。**Lesson 22 尚未完成；本次历史残留清理属于 L21 后的项目维护，不将 Lesson 22 写为已完成。
+- **Current Lesson：**Lesson 22 completed。
+- **Current Stage：**TypeScript fundamentals → OOP → async programming → HTTP/API integration → runtime validation → environment configuration → project modularization → UI state modeling → structured result/error modeling → Product end-to-end integration → final consolidation and project readiness。
+- **TypeScript Phase：**Completed。TypeScript 独立学习阶段正式结束。
+- **Next Stage：**Astro learning / project integration。
+- **Next Stage Status：Planned / Next。**当前仓库尚未安装或实现 Astro，不把下一阶段内容写为已完成。
 
 <a id="history"></a>
 ## 工程变更与其他提交
 
-本表补齐课程表之外的 14 条提交。历史修复只按差异描述，不猜测对话中的原因或验收结果。每次文档维护均应以当前 `HEAD` 重新核对 Git 历史并增量更新本表。
+本表补齐课程表之外的 15 条提交。历史修复只按差异描述，不猜测对话中的原因或验收结果。每次文档维护均应以当前 `HEAD` 重新核对 Git 历史并增量更新本表。
 
 | 编号 | 时间（+08:00） | 提交 / 分支证据 | 原始 message | 内容与定位 |
 | --- | --- | --- | --- | --- |
@@ -353,6 +368,7 @@ request<Todo>("/todos/1", isTodo);
 | E12 | 2026-09-05 19:18:45 | `9dbbfe0` / M | Merge branch 'main' of github.com:darrenduan369/ai-fullstack-learning-roadmap | 合并 main 历史；与当日重载课程区分 |
 | E13 | 2026-09-12 18:11:49 | `f5c5539` / M | docs: organize lessons 1 through 12 learning notes | 整理 L01～L12 学习记录；属于课程文档维护提交，不重复计为课程 |
 | E14 | 2026-09-24 11:25:39 | `2f39e18` / M | docs: update lessons 13-18 and synchronize learning trace | 同步 L13～L18、维护规则与两版学习档案；不重复计为课程 |
+| E15 | 2026-09-29 16:00:46 | `c1e620c` / M | refactor: L21 archive learning history and remove legacy practice code | 同步 L19～L21 文档并安全清理历史练习残留；不重复计为课程 |
 
 <a id="lookup"></a>
 ## 文件与问题检索
@@ -384,7 +400,7 @@ request<Todo>("/todos/1", isTodo);
 | [src/errors/ProductNotFoundError.ts](../src/errors/ProductNotFoundError.ts) / [src/errors/ProductValidationError.ts](../src/errors/ProductValidationError.ts) / [src/errors/HttpError.ts](../src/errors/HttpError.ts) / [src/errors/ResponseValidationError.ts](../src/errors/ResponseValidationError.ts) / [src/errors/index.ts](../src/errors/index.ts) | 领域、HTTP、响应校验错误及显式导出 | L11、L18、L20～L21 |
 | [src/config/apiConfig.ts](../src/config/apiConfig.ts) | 读取并 Fail Fast 校验 `API_BASE_URL` | L17 |
 | [.env.example](../.env.example) / [.gitignore](../.gitignore) | 环境变量模板与本地 `.env` 忽略规则 | L17 |
-| [package.json](../package.json) / [tsconfig.json](../tsconfig.json) | build/start、Node 类型与编译配置 | L01、L17 |
+| [package.json](../package.json) / [tsconfig.json](../tsconfig.json) | typecheck/build/start、严格类型检查与编译配置 | L01、L17、L22 |
 ### 排查线索登记
 
 以下为基线代码阅读得到的现状或待明确边界，未在本次修复，亦未运行专门复现测试。后续修复应创建 REQ 记录并回链此编号。
@@ -450,7 +466,8 @@ node dist/index.js
 | [REQ-20260923-01](#req-20260923-01) | 2026-09-23 | 根据提交与当前代码补录第 13～18 课并同步 Markdown/DOCX | 已随 `fdfdb79` 提交 | L13～L18、Q09～Q10 |
 | [REQ-20260924-01](#req-20260924-01) | 2026-09-24 | 按课程事实校正 L13～L18、进度和长期维护规则 | Markdown/DOCX 已同步，待提交 | L13～L18、Q01、Q10～Q11 |
 | [REQ-20260924-02](#req-20260924-02) | 2026-09-24 | 补齐工程提交表并建立实时增量同步规则 | Markdown/DOCX 已同步，待提交 | E01～E13、REQ-20260924-01 |
-| [REQ-20260929-01](#req-20260929-01) | 2026-09-29 | 同步 L19～L21 后安全清理历史练习残留 | 完成，变更待提交 | L19～L21、E14 |
+| [REQ-20260929-01](#req-20260929-01) | 2026-09-29 | 同步 L19～L21 后安全清理历史练习残留 | 已随 `c1e620c` 提交 | L19～L21、E14～E15 |
+| [REQ-20260929-02](#req-20260929-02) | 2026-09-29 | 同步 L22 TypeScript 最终收尾与 Astro 就绪状态 | Markdown/DOCX 已同步，待提交 | L22、E15、REQ-20260929-01 |
 
 <a id="req-20260908-01"></a>
 ### REQ-20260908-01：建立可持续维护的追溯档案
@@ -556,8 +573,19 @@ node dist/index.js
 - 安全清理：`src/index.ts` 删除 L01～L20 已注释入口演示及其无效 imports，只保留当前 `runProductListStateDemo()`；`src/services/productService.ts` 删除已由 `productApi.ts` / 当前 Service 替代的注释版 `getRequiredProductById(products, id)` 与 Promise/setTimeout 版 `fetchProductById(id)`；`src/api/httpClient.ts` 删除两个已被 validator 版 `request<T>` 替代的注释实现及失效的 `ApiResponse` import；三个 demo 文件删除孤立注释调用、重复的 `testHttpError` 和一次性分隔输出。
 - 保留结论：保留 `fetchProductMessage` 与 `src/async/asyncDemo.ts` 作为仍有效的 L14 Promise 练习；保留 `resultToRequestState` 作为 L20 分层概念；保留全部正式 Product 服务函数、validators、errors、models、types、Todo API 与 L19～L21 demo。Q01、Q08、Q10、Q11 未借清理改动。
 - 验证：`npm.cmd run build` 通过，TypeScript 0 errors；`npm.cmd start` 通过，依次输出 loading、包含嵌套 supplier 的 success 列表状态和 empty 状态。全局复查未发现 unresolved import、重复的当前 `fetchProductById` / `getRequiredProductById` 定义或指定的一次性诊断代码。
-- Git：不创建提交，不 push，不 amend、不 reset、不改写历史；本次工作区变更待用户检查。
-- 未决项与后续：保留无当前入口调用但仍有课程或复用价值的有效导出；未执行 Word/WPS 逐页视觉渲染。Lesson 22 仅标记 Planned / Next。
+- Git：实际提交为 `c1e620c`，2026-09-29 16:00:46 +08:00，`main`；message：`refactor: L21 archive learning history and remove legacy practice code`。该提交包含两份文档和安全清理代码，未改写历史。
+- 未决项与后续：保留无当前入口调用但仍有课程或复用价值的有效导出；未执行 Word/WPS 逐页视觉渲染。后续 L22 已由 `f561f6e` 完成，见 REQ-20260929-02。
+<a id="req-20260929-02"></a>
+### REQ-20260929-02：同步 Lesson 22 TypeScript 最终收尾
+
+- 请求/记录时间：2026-09-29 17:03:06 +08:00。
+- 类型与状态：学习文档维护；完成，文档变更待提交。
+- 需求摘要与验收标准：依据已提交 L22 和明确课程边界，把 TypeScript 最终收尾、项目健康检查与 Astro 就绪状态同步到 Markdown/DOCX；将 L22 标记 Completed，将 TypeScript 独立学习阶段标记结束，Astro 仅标记下一阶段。
+- 事实与证据：`f561f6e` 仅修改 `package.json`，新增 `typecheck: tsc --noEmit`；没有安装 Astro、没有新增 Astro 文件或实现。前一工程提交 `c1e620c` 已完成 L19～L21 文档同步和历史残留清理，补录为 E15 并回填 REQ-20260929-01。
+- 文档改动：课程索引与详情新增 L22；Current Progress 更新为 Lesson 22 completed / TypeScript Phase Completed；Next Stage 更新为 Astro Planned / Next；文件导航补充 typecheck/build/start 职责。
+- Git：处理分支 `main`；修改前基线 `f561f6e`；本次仅修改两份学习记录，待提交，未 commit、push 或改写历史。
+- 验证：`npm.cmd run typecheck`、`npm.cmd run build`、`npm.cmd start` 均通过；start 正常输出 Product list loading、success 和 empty 状态。Markdown/DOCX 结构与链接核验结果见本次最终检查。
+- 未决项与后续：Astro 尚未开始实现；未使用 Word/WPS 逐页视觉渲染 DOCX。
 <a id="maintenance"></a>
 ## 后续记录模板与维护流程
 
