@@ -2,6 +2,7 @@
   "name": "ts-learning",
   "version": "1.0.0",
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "build": "tsc",
     "start": "node --env-file=.env dist/index.js"
   },
